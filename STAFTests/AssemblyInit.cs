@@ -8,62 +8,29 @@ using STAF.CF;
 namespace STAFTests
 {
     [TestClass]
-    class AssemblyInit
+    public class GlobalAssemblyInitialize: AssemblyInit
     {
         private static string resTestDir = "";
 
         [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext tc)
+        public static void Setup(TestContext tc)
         {
             try
             {
-                Console.WriteLine("Before all tests");
-                var driverProcess = Process.GetProcesses().Where(pr => pr.ProcessName == "chromedriver");
-
-                foreach (var process in driverProcess)
-                {
-                    process.Kill();
-                }
-                resTestDir = tc.TestDir;
-                string locPath = tc.DeploymentDirectory;
-
-                Environment.SetEnvironmentVariable("OverallFailFlag", "No");
-                Environment.SetEnvironmentVariable("resultbodyfinal", "");
+                AssemblyInitialize(tc);
             }
             catch { }
         }
 
         [AssemblyCleanup]
-        public static void AssemblyCleanUp()
+        public static void TearDown()
         {
             try
             {
-                closeAllBrowser();
-
-                StreamWriter writer;
-                string overallResult = DirectoryUtils.BaseDirectory + "\\ResultTemplate.html";
-                writer = new StreamWriter(File.Open(overallResult, FileMode.Append, FileAccess.Write, FileShare.Write));
-                writer.WriteLine(Environment.GetEnvironmentVariable("resultbodyfinal"));
-                writer.Flush();
-                writer.Close();
-
-                File.Copy(DirectoryUtils.BaseDirectory + "\\ResultTemplate.html", resTestDir + @"\ResultTemplateFinal.html");
-                //CommonAction.SendEmail("sooraj171@hotmail.com", "sooraj171@gmail.com", "Auto Test Result - Google", Environment.GetEnvironmentVariable("resultbody"), resTestDir + @"\ResultTemplateFinal.html");
-                if (Environment.GetEnvironmentVariable("OverallFailFlag").ToLower() == "yes")
-                {
-                    Assert.Fail("Some Test Cases failed in execution");
-                }
+                AssemblyCleanUp();
             }
             catch { }
         }
 
-        public static void closeAllBrowser()
-        {
-            var driverP = Process.GetProcesses().Where(pr => pr.ProcessName == "chromedriver");
-            foreach (var process in driverP)
-            {
-                process.Kill();
-            }
-        }
     }
 }

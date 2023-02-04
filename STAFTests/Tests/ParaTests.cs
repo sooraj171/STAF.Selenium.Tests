@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using STAF.CF;
-
+using System;
 
 namespace STAFTests
 {
@@ -9,6 +11,17 @@ namespace STAFTests
     {
         // Implementing Page Object Model in Second way
 
+        protected override ChromeOptions SetChromeOptions()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("start-maximized");
+            options.AddArguments("--incognito");
+            return options;
+        }
+        //public override IWebDriver GetBrowserDriverObject(string brwType, string driverPath = "", bool isRemote = false)
+        //{
+        //    return base.GetBrowserDriverObject(brwType, driverPath, isRemote);
+        //}
         /// <summary>
         /// Test to verify users are logged into account overview screen
         /// </summary>
@@ -49,6 +62,8 @@ namespace STAFTests
                 .VerifyAboutUsPageisLoaded();
                 
         }
+
+        
 
     }
 }
