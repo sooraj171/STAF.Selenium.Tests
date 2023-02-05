@@ -1,6 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using STAFTests.Pages;
-using System;
 using STAF.CF.Excel;
 using STAF.CF;
 using System.Text;
