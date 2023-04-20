@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SATF;
 using STAF.CF;
 
 namespace STAFTests
@@ -13,6 +14,7 @@ namespace STAFTests
             try
             {
                 AssemblyInitialize(tc);
+               // string testval=AppConfig.GetConfig().GetSection("Email:SmtpHost").Value;
             }
             catch { }
         }
