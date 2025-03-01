@@ -36,6 +36,7 @@
     <Parameter name="searchText" value="Sooraj Ramachandran" />
     <Parameter name="userName" value="srjtest1" />
     <Parameter name="password" value="srjtest1" />
+    <Parameter name="project" value="Sooraj" />
   </TestRunParameters>
 
   <!-- Configuration for loggers -->

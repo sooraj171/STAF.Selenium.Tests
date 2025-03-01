@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <!--RunSettingsFilePath>$(MSBuildProjectDirectory)\testrunsetting.runsettings</RunSettingsFilePath-->
     <Version>2.0.0</Version>
@@ -16,19 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="C:\Users\soora\.nuget\packages\staf.ui.api\3.2.6\contentFiles\any\net6.0\appsettings.json" />
+    <Content Remove="C:\Users\soora\.nuget\packages\staf.ui.api\3.4.0\contentFiles\any\net6.0\appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.74" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.8.2" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="112.0.5615.4900" />
-    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="112.0.1722.39" />
-    <PackageReference Include="STAF.UI.API" Version="3.2.8" />
+    <PackageReference Include="STAF.UI.API" Version="3.5.0" />
   </ItemGroup>
 
   <ItemGroup>

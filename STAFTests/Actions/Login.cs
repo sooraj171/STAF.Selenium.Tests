@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using STAF.CF;
+using STAF;
 
 namespace STAFTests
 {

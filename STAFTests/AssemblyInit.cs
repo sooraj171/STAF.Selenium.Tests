@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SATF;
+using STAF;
 using STAF.CF;
 
 namespace STAFTests
