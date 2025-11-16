@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using SATF.Accessibility;
 using STAF.CF;
-using STAFTests.Tests;
+
 using System;
 
 namespace STAFTests
@@ -31,6 +31,9 @@ namespace STAFTests
         public void LoginToApp()
         {
             driver.Navigate().GoToUrl(TestContext.Properties["purl"].ToString());
+
+            AxeAccessibility axeAccessibility = new AxeAccessibility(driver);
+            axeAccessibility.AnalyzePageAndSaveHtml("C:\\repo\\sooraj171\\STAF\\STAFS\\test2.html");
             Login pgG = new Login(driver, TestContext);
             pgG.LoginToApplication(TestContext.Properties["userName"].ToString(), TestContext.Properties["password"].ToString())
                 .VerifyAccountsOverviewPageisLoaded()
@@ -45,6 +48,8 @@ namespace STAFTests
         public void LoginToAppWithInvalidId()
         {
             driver.Navigate().GoToUrl(TestContext.Properties["purl"].ToString());
+            
+
             Login pgG = new Login(driver, TestContext);
             pgG.LoginToApplicationInvalid(TestContext.Properties["userName"].ToString(), "erridval")
                 .VerifyInvalidUserMessageIsDisplayed()
@@ -64,40 +69,6 @@ namespace STAFTests
                 .VerifyAboutUsPageisLoaded();
                 
         }
-
-        [TestMethod]
-        public void TestAIElementGet()
-        {
-            driver.Navigate().GoToUrl(TestContext.Properties["purl"].ToString());
-
-            // Get page source
-            string pageSource = driver.PageSource;
-
-            // Define the display text to find the element next to
-            string searchText = "Username";
-
-            // Extract only relevant part
-            string un = AiElementGet.ExtractRelevantHtml(pageSource, "Username");
-            string pwd = AiElementGet.ExtractRelevantHtml(pageSource, "Password","input");
-
-            // Send to Ollama for processing
-            string locator1 = AiElementGet.FindElementLocatorUsingOllama(un, "Username");
-            string locator2 = AiElementGet.FindElementLocatorUsingOllama(un, "Password");
-
-
-            if (!string.IsNullOrEmpty(locator1))
-            {
-                IWebElement element = driver.FindElement(By.XPath(locator1));
-                element.SendKeys(searchText);
-
-                element = driver.FindElement(By.XPath(locator2));
-                element.SendKeys("test");
-                Console.WriteLine("Element found: " + element.TagName);
-            }
-
-        }
-
-
 
     }
 }
