@@ -2,9 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using STAF.CF.Excel;
 using STAF.CF;
 using System.Text;
-using System.Xml;
-using System;
-using System.Collections.Generic;
+
 
 namespace STAFTests
 {
@@ -19,7 +17,9 @@ namespace STAFTests
         public void CompareExcel()
         {
             ExcelDriver excel= new ExcelDriver();
-            ExcelCompareStatus res = excel.CompareFiles("C:\\Users\\soora\\Downloads\\TestDataRealEstate1.xlsx", "C:\\Users\\soora\\Downloads\\TestDataRealEstate2.xlsx",1,1);
+            string file1 = DirectoryUtils.BaseDirectory + "\\TestData\\TestDataExcel1.xlsx";
+            string file2 = DirectoryUtils.BaseDirectory + "\\TestData\\TestDataExcel1.xlsx"; // Assuming a second file for comparison
+            ExcelCompareStatus res = excel.CompareFiles(file1, file2, 1,1);
             StringBuilder stringBuilder= new StringBuilder();
             res.Messages.ForEach(p => stringBuilder.AppendLine(p.ToString()));
             if (res.IsMatching)
@@ -32,8 +32,6 @@ namespace STAFTests
             }
 
         }
-
-        
 
     }
 }

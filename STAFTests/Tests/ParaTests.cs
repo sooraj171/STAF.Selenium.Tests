@@ -33,7 +33,8 @@ namespace STAFTests
             driver.Navigate().GoToUrl(TestContext.Properties["purl"].ToString());
 
             AxeAccessibility axeAccessibility = new AxeAccessibility(driver);
-            axeAccessibility.AnalyzePageAndSaveHtml("C:\\repo\\sooraj171\\STAF\\STAFS\\test2.html");
+            string filePath = DirectoryUtils.BaseDirectory;
+            axeAccessibility.AnalyzePageAndSaveHtml(filePath+"\\test2.html");
             Login pgG = new Login(driver, TestContext);
             pgG.LoginToApplication(TestContext.Properties["userName"].ToString(), TestContext.Properties["password"].ToString())
                 .VerifyAccountsOverviewPageisLoaded()

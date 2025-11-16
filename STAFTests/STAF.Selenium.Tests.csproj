@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="C:\Users\soora\.nuget\packages\staf.ui.api\3.4.0\contentFiles\any\net6.0\appsettings.json" />
+    <None Remove="STAF.Selenium.Tests.csproj.Backup.tmp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +34,14 @@
     <None Update="ResultTemplate.html">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\TestDataExcel1.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="TestData\" />
   </ItemGroup>
+
 
 </Project>
