@@ -23,8 +23,8 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
-    <PackageReference Include="RestSharp" Version="112.1.1-alpha.0.4" />
-    <PackageReference Include="STAF.UI.API" Version="4.2.2" />
+    <PackageReference Include="RestSharp" Version="113.0.0" />
+    <PackageReference Include="STAF.UI.API" Version="4.3.2" />
   </ItemGroup>
 
   <ItemGroup>
