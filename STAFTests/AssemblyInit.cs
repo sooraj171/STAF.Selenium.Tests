@@ -1,6 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using STAF;
 using STAF.CF;
+
+[assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 4)]
 
 namespace STAFTests
 {

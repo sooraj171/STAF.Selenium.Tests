@@ -32,5 +32,16 @@ namespace STAFTests
                 Assert.Fail("User details are NOT as expected in response");
             }
         }
+
+        /// <summary>
+        /// Sample: ReportResultAPI Pass, Fail, Warn, Info for API tests.
+        /// </summary>
+        [TestMethod]
+        public void Sample_ReportResultAPI_Pass_Warn_Info()
+        {
+            ReportResultAPI.ReportResultPass(TestContext, "API Reporting", "Step 1: Pass.");
+            ReportResultAPI.ReportResultInfo(TestContext, "API Reporting", "Step 2: Info message.");
+            ReportResultAPI.ReportResultWarn(TestContext, "API Reporting", "Step 3: Optional warning.");
+        }
     }
 }

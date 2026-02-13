@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,12 +24,12 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
     <PackageReference Include="RestSharp" Version="113.0.0" />
-    <PackageReference Include="STAF.UI.API" Version="4.3.2" />
+    <PackageReference Include="STAF.UI.API" Version="4.3.3" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ResultTemplate.html">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
