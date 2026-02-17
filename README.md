@@ -9,6 +9,7 @@ Anyone using this project can see working samples of every major STAF feature an
 ## Table of Contents
 
 - [Features Covered](#features-covered)
+- [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -37,6 +38,24 @@ Anyone using this project can see working samples of every major STAF feature an
 | **Accessibility (Axe)** | AnalyzePage, AnalyzePageAndSaveHtml, AnalyzeCssSelector, AnalyzeElement | `ParaTests` (LoginToApp) |
 | **Configuration** | appsettings.json, run settings (browser, url, TestRunParameters) | `appsettings.json`, `testrunsetting.runsettings` |
 | **Parallel execution** | MSTest Parallelize (Workers, Scope) | `testrunsetting.runsettings` |
+
+---
+
+## MCP Agent (AI-Assisted Development)
+
+This repo includes an **MCP (Model Context Protocol) server** for Selenium + STAF. Use it with **Cursor** or **VS Code** to:
+
+- **Control browsers** – Start Chrome/Edge/Firefox, navigate, click, type, take screenshots
+- **Generate STAF code** – Produce C# Selenium tests (Page Object Model, ReportResult, TestBaseClass)
+
+### Quick Start
+
+1. **Clone and open** the solution in Cursor or VS Code.
+2. **MCP is preconfigured** – `.cursor/mcp.json` and `.vscode/mcp.json` point to `MCPAgent/publish/mcp-sharp-staf-selenium.exe`.
+3. **Restart** Cursor or VS Code so the **selenium-staf** server loads.
+4. Use AI to run browser automation or generate STAF-style tests from natural language.
+
+No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
 
 ---
 
@@ -118,6 +137,12 @@ STAF.Selenium.Tests/
 ├── README.md
 ├── STAF.Selenium.Tests.sln
 ├── nuget.config
+├── .cursor/mcp.json           # Cursor MCP config (selenium-staf)
+├── .vscode/mcp.json           # VS Code MCP config (selenium-staf)
+├── MCPAgent/                  # MCP server for Selenium + STAF
+│   ├── README.md
+│   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
+│   └── build-mcp-agent.ps1    # Rebuild script
 └── STAFTests/
     ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.3.3, MSTest, RestSharp, etc.
     ├── appsettings.json              # ConnectionStrings, Email
