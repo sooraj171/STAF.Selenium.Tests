@@ -166,6 +166,9 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+# Exception: MCP Agent server (committed for out-of-box experience)
+!MCPAgent/
+!MCPAgent/publish/
 
 # Publish Web Output
 *.[Pp]ublish.xml

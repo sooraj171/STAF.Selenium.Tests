@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "selenium-staf": {
+      "command": "MCPAgent/publish/mcp-sharp-staf-selenium.exe",
+      "args": []
+    }
+  }
+}
