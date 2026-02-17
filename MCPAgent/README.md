@@ -50,6 +50,16 @@ Or manually:
 dotnet publish C:\path\to\mcp-sharp-staf-selenium\mcp-sharp-staf-selenium\mcp-sharp-staf-selenium.csproj -c Release -r win-x64 --self-contained true -o C:\path\to\STAF.Selenium.Tests\MCPAgent\publish
 ```
 
+## MCP server selection in chat
+
+As of early 2025, Cursor does not support a dedicated keyword (e.g. `@selenium-staf`) to force use of a specific MCP server in chat. The Composer Agent automatically selects relevant MCP tools from all configured servers. To increase use of the **selenium-staf** server:
+
+- **Be explicit in your prompt**: e.g. *"Use the selenium-staf MCP tools to generate STAF Page Object code"* or *"Generate C# Selenium tests using STAF Page Object Model – create separate Pages, Actions, and Tests files"*.
+- **Reference the framework**: Mention *STAF*, *Page Object Model*, or *STAF.Selenium.Tests* so the agent is more likely to use the selenium-staf tools.
+- **Use file structure keywords**: Ask to *"create Page classes in Pages/ folder and tests in Tests/ folder"* – the guidance will steer the agent toward the correct structure.
+
+A feature request for `@mcp serverName` exists in the Cursor community; check Cursor docs for future support.
+
 ## Troubleshooting
 
 - **Server not loading**: Restart Cursor/VS Code after cloning.
