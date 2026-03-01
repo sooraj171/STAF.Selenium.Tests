@@ -11,6 +11,7 @@ Anyone using this project can see working samples of every major STAF feature an
 - [Features Covered](#features-covered)
 - [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
 - [Technical Architecture](#technical-architecture)
+- [Release Notes](#release-notes)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -70,9 +71,15 @@ For **technical architecture**, **MCP Agent usage**, and **novelty summary** (su
 
 ---
 
+## Release Notes
+
+The project has been **upgraded to .NET 10**. For details (target framework change, dependency updates), see **[RELEASE_NOTES.md](RELEASE_NOTES.md)**.
+
+---
+
 ## Prerequisites
 
-- **.NET 8 SDK**
+- **.NET 10 SDK**
 - **Visual Studio 2022** (or later) or **VS Code** with C# extension
 - **Chrome** or **Edge** (for UI tests)
 - **MSTest** (included via package reference)

@@ -1,72 +1,83 @@
-# MCP Agent – Selenium STAF
+# MCP Sharp STAF Selenium – Extension
 
-This folder contains the **MCP (Model Context Protocol) server** for Selenium WebDriver with STAF integration. It enables AI assistants (Cursor, VS Code with Copilot, Claude Desktop) to:
-
-1. **Control browsers** – Start Chrome/Edge/Firefox, navigate, click, type, take screenshots, etc.
-2. **Generate STAF code** – Produce C# Selenium tests using the STAF framework (Page Object Model, ReportResult, TestBaseClass).
+Self-contained MCP server build for easy reuse. Copy this **extension** folder into your test project and reference the exe from your MCP configuration. The server uses **stdio** (stdin/stdout) as the transport—no network port or URL.
 
 ## Contents
 
-| Item | Description |
-|------|-------------|
-| `publish/` | Self-contained win-x64 build. Contains `mcp-sharp-staf-selenium.exe` and dependencies. |
-| `mcp-config.example.json` | Example MCP configuration for reference. |
-| `build-mcp-agent.ps1` | PowerShell script to rebuild the server from source (requires mcp-sharp-staf-selenium repo). |
+- **publish/** – Published build (win-x64, self-contained, .NET 10). Populated by running the rebuild script or publish command below.
+  - **mcp-sharp-staf-selenium.exe** – MCP server; launch this exe and the MCP client communicates via stdio.
 
-## Quick Start
+## Usage
 
-1. **Clone and open** the STAF.Selenium.Tests solution.
-2. **MCP config is already set** – `.cursor/mcp.json` and `.vscode/mcp.json` at the workspace root point to `MCPAgent/publish/mcp-sharp-staf-selenium.exe`.
-3. **Restart Cursor or VS Code** so the MCP server loads.
-4. The **selenium-staf** server will appear in your AI tools.
+### 1. Copy extension into your project
 
-No .NET SDK is required on the machine – the exe is self-contained.
+Copy the entire `extension` folder into your test project root:
 
-## MCP Tools
+```
+YourTestProject/
+├── extension/
+│   └── publish/
+│       └── mcp-sharp-staf-selenium.exe
+├── YourTests.csproj
+└── ...
+```
 
-### Runtime (browser automation)
-- `start_browser`, `navigate`, `find_element`, `click_element`, `send_keys`
-- `get_element_text`, `hover`, `take_screenshot`, `close_session`
-- And more – see [mcp-sharp-staf-selenium](https://github.com/sooraj171/mcp-sharp-staf-selenium).
+### 2. Add MCP configuration
 
-### Code generation
-- `GenerateSeleniumStafCode` – Full STAF scenario (pages, actions, tests)
-- `GenerateSeleniumSnippet` – Single-operation snippet
-- `GeneratePageObjectSkeleton` – Page Object class from element list
-- `GetSeleniumGuidance` – STAF/Selenium guidance
-- `GetStafSeleniumFrameworkReference` – Framework reference
+Point your MCP client to the exe. The server uses **stdio** transport (stdin/stdout).
 
-## Rebuilding the Server
+**Cursor** – Add to `.cursor/mcp.json` or Cursor Settings → MCP:
 
-If you have the [mcp-sharp-staf-selenium](https://github.com/sooraj171/mcp-sharp-staf-selenium) source locally:
+```json
+{
+  "mcpServers": {
+    "selenium-staf": {
+      "command": "extension/publish/mcp-sharp-staf-selenium.exe",
+      "args": []
+    }
+  }
+}
+```
+
+**Claude Desktop** – Add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "selenium-staf": {
+      "command": "extension/publish/mcp-sharp-staf-selenium.exe",
+      "args": []
+    }
+  }
+}
+```
+
+Use an absolute path if needed:
+
+```json
+"command": "C:/path/to/YourTestProject/extension/publish/mcp-sharp-staf-selenium.exe"
+```
+
+## Rebuilding (get latest from main project)
+
+To refresh `extension/publish` with the latest build from `mcp-sharp-staf-selenium.csproj`:
+
+**From repo root:**
 
 ```powershell
-.\MCPAgent\build-mcp-agent.ps1
+.\extension\rebuild.ps1
+```
+
+Or with cmd:
+
+```cmd
+extension\rebuild.cmd
 ```
 
 Or manually:
 
 ```bash
-dotnet publish C:\path\to\mcp-sharp-staf-selenium\mcp-sharp-staf-selenium\mcp-sharp-staf-selenium.csproj -c Release -r win-x64 --self-contained true -o C:\path\to\STAF.Selenium.Tests\MCPAgent\publish
+dotnet publish mcp-sharp-staf-selenium/mcp-sharp-staf-selenium.csproj -c Release -r win-x64 --self-contained true -o extension/publish
 ```
 
-## MCP server selection in chat
-
-As of early 2025, Cursor does not support a dedicated keyword (e.g. `@selenium-staf`) to force use of a specific MCP server in chat. The Composer Agent automatically selects relevant MCP tools from all configured servers. To increase use of the **selenium-staf** server:
-
-- **Be explicit in your prompt**: e.g. *"Use the selenium-staf MCP tools to generate STAF Page Object code"* or *"Generate C# Selenium tests using STAF Page Object Model – create separate Pages, Actions, and Tests files"*.
-- **Reference the framework**: Mention *STAF*, *Page Object Model*, or *STAF.Selenium.Tests* so the agent is more likely to use the selenium-staf tools.
-- **Use file structure keywords**: Ask to *"create Page classes in Pages/ folder and tests in Tests/ folder"* – the guidance will steer the agent toward the correct structure.
-
-A feature request for `@mcp serverName` exists in the Cursor community; check Cursor docs for future support.
-
-## Troubleshooting
-
-- **Server not loading**: Restart Cursor/VS Code after cloning.
-- **Path issues**: If the relative path fails, use an absolute path in `.cursor/mcp.json` or `.vscode/mcp.json`:
-
-  ```json
-  "command": "C:/repo/cursor/STAF.Selenium.Tests/MCPAgent/publish/mcp-sharp-staf-selenium.exe"
-  ```
-
-- **Chrome/Edge not starting**: Ensure Chrome or Edge is installed; Selenium 4 auto-manages drivers.
+Requires .NET 10 SDK. After rebuilding, copy the updated `extension` folder (including `publish/`) into your test project.
