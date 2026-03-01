@@ -10,6 +10,7 @@ Anyone using this project can see working samples of every major STAF feature an
 
 - [Features Covered](#features-covered)
 - [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
+- [Technical Architecture](#technical-architecture)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -56,6 +57,16 @@ This repo includes an **MCP (Model Context Protocol) server** for Selenium + STA
 4. Use AI to run browser automation or generate STAF-style tests from natural language.
 
 No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
+
+---
+
+## Technical Architecture
+
+For **technical architecture**, **MCP Agent usage**, and **novelty summary** (suitable for attorney or technical architect review), see:
+
+- **[docs/Technical-Architecture.md](docs/Technical-Architecture.md)** – Full architecture, MCP integration, novelty, and architect checklist.
+- **[docs/Architecture-Diagram.md](docs/Architecture-Diagram.md)** – Mermaid diagrams (system context, MCP tools, framework structure).
+- **[docs/Architecture-Summary.md](docs/Architecture-Summary.md)** – One-page summary.
 
 ---
 
