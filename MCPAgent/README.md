@@ -39,6 +39,12 @@ Point your MCP client to the exe. The server uses **stdio** transport (stdin/std
 }
 ```
 
+**Visual Studio (Professional / 2022 17.14+)** – This repo includes a root-level **`.mcp.json`** so Visual Studio discovers the MCP server automatically when you open the solution (GitHub Copilot → Agent mode). No extra setup needed after get latest. If the agent does not start:
+
+- Ensure the solution is opened from the repo root (folder that contains `STAF.Selenium.Tests.sln` and `MCPAgent/`).
+- In Visual Studio: **GitHub Copilot Chat** → mode **Agent** → enable the **selenium-staf** tools when prompted.
+- Optional: add or merge the same server into `%USERPROFILE%\.mcp.json` for a user-wide config, or into `.vs/mcp.json` (repo `.vs` folder, user-specific) if you need a different path (e.g. absolute path to the exe).
+
 **Claude Desktop** – Add to `claude_desktop_config.json`:
 
 ```json
