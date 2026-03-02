@@ -10,6 +10,8 @@ Anyone using this project can see working samples of every major STAF feature an
 
 - [Features Covered](#features-covered)
 - [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
+- [Technical Architecture](#technical-architecture)
+- [Release Notes](#release-notes)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
@@ -50,18 +52,43 @@ This repo includes an **MCP (Model Context Protocol) server** for Selenium + STA
 
 ### Quick Start
 
-1. **Clone and open** the solution in Cursor or VS Code.
-2. **MCP is preconfigured** – `.cursor/mcp.json` and `.vscode/mcp.json` point to `MCPAgent/publish/mcp-sharp-staf-selenium.exe`.
-3. **Restart** Cursor or VS Code so the **selenium-staf** server loads.
+1. **Clone and open** the solution in Cursor, VS Code, or **Visual Studio** (Professional / 2022 17.14+).
+2. **MCP is preconfigured** for all supported editors:
+   - **Cursor / VS Code:** `.cursor/mcp.json` and `.vscode/mcp.json` point to `MCPAgent/publish/mcp-sharp-staf-selenium.exe`.
+   - **Visual Studio:** repo-root `.mcp.json` is picked up automatically (GitHub Copilot → Agent mode). Get latest and open the solution; no extra config needed.
+3. **Restart** the editor (or reload Copilot in VS) so the **selenium-staf** server loads.
 4. Use AI to run browser automation or generate STAF-style tests from natural language.
 
 No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
+
+### AI instructions and rules
+
+Framework rules (TestBaseClass, page objects, waits, tool usage, test workflow, coding standards) are configured so the AI follows STAF patterns:
+
+- **Cursor:** [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) – applied automatically in this project.
+- **VS Code (GitHub Copilot):** [.github/copilot-instructions.md](.github/copilot-instructions.md) – used by Copilot for repo-level guidance.
+
+---
+
+## Technical Architecture
+
+For **technical architecture**, **MCP Agent usage**, and **novelty summary** (suitable for attorney or technical architect review), see:
+
+- **[docs/Technical-Architecture.md](docs/Technical-Architecture.md)** – Full architecture, MCP integration, novelty, and architect checklist.
+- **[docs/Architecture-Diagram.md](docs/Architecture-Diagram.md)** – Mermaid diagrams (system context, MCP tools, framework structure).
+- **[docs/Architecture-Summary.md](docs/Architecture-Summary.md)** – One-page summary.
+
+---
+
+## Release Notes
+
+The project has been **upgraded to .NET 10**. For details (target framework change, dependency updates), see **[RELEASE_NOTES.md](RELEASE_NOTES.md)**.
 
 ---
 
 ## Prerequisites
 
-- **.NET 8 SDK**
+- **.NET 10 SDK**
 - **Visual Studio 2022** (or later) or **VS Code** with C# extension
 - **Chrome** or **Edge** (for UI tests)
 - **MSTest** (included via package reference)
@@ -82,8 +109,11 @@ No .NET SDK is required to run the MCP server – the exe is self-contained. See
    dotnet build
    ```
 
-3. **Configure run settings** (Visual Studio)  
-   **Test** → **Configure Run Settings** → **Select Solution Wide runsettings File** → choose `STAFTests\testrunsetting.runsettings`.
+3. **Run settings (optional)**  
+   The runsettings file is set by default: the project file points to `STAFTests\testrunsetting.runsettings`, and `.vscode/settings.json` configures it for VS Code. If you run tests and see a message that run settings may not be set, configure explicitly:
+   - **VS Code:** ensure `.vscode/settings.json` has `"dotnet.unitTests.runSettingsPath"` (already set in this repo).
+   - **Visual Studio:** **Test** → **Configure Run Settings** → **Select Solution Wide runsettings File** → `STAFTests\testrunsetting.runsettings`.
+   - **CLI:** `dotnet test --settings STAFTests\testrunsetting.runsettings` (or rely on the project default).
 
 4. **Run tests**
    - From IDE: **Test Explorer** → select tests → **Run**
@@ -136,9 +166,12 @@ No .NET SDK is required to run the MCP server – the exe is self-contained. See
 STAF.Selenium.Tests/
 ├── README.md
 ├── STAF.Selenium.Tests.sln
+├── .mcp.json                  # MCP config for Visual Studio (selenium-staf; source-controlled)
 ├── nuget.config
 ├── .cursor/mcp.json           # Cursor MCP config (selenium-staf)
-├── .vscode/mcp.json           # VS Code MCP config (selenium-staf)
+├── .vscode/
+│   ├── mcp.json               # VS Code MCP config (selenium-staf)
+│   └── settings.json          # dotnet.unitTests.runSettingsPath → runsettings (default for VS Code)
 ├── MCPAgent/                  # MCP server for Selenium + STAF
 │   ├── README.md
 │   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
@@ -161,7 +194,7 @@ STAF.Selenium.Tests/
 
 ## Running Tests
 
-- **All tests**: `dotnet test --settings STAFTests\testrunsetting.runsettings`
+- **All tests**: `dotnet test` (runsettings file is used by default from the project). Or explicitly: `dotnet test --settings STAFTests\testrunsetting.runsettings`
 - **Filter by class**: `dotnet test --filter "FullyQualifiedName~APITests"`
 - **Filter by method**: `dotnet test --filter "FullyQualifiedName~Sample_ReportResult_Pass_Fail_Warn_Info"`
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <!--RunSettingsFilePath>$(MSBuildProjectDirectory)\testrunsetting.runsettings</RunSettingsFilePath-->
+    <RunSettingsFilePath>$(MSBuildProjectDirectory)\testrunsetting.runsettings</RunSettingsFilePath>
     <Version>2.0.0</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.1.0" />
     <PackageReference Include="RestSharp" Version="113.1.0" />
     <PackageReference Include="STAF.UI.API" Version="4.3.3" />

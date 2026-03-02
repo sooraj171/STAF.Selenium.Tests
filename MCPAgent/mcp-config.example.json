@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "selenium-staf": {
-      "command": "MCPAgent/publish/mcp-sharp-staf-selenium.exe",
+      "command": "extension/publish/mcp-sharp-staf-selenium.exe",
       "args": []
     }
   }
