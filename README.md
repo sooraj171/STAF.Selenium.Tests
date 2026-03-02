@@ -61,6 +61,13 @@ This repo includes an **MCP (Model Context Protocol) server** for Selenium + STA
 
 No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
 
+### AI instructions and rules
+
+Framework rules (TestBaseClass, page objects, waits, tool usage, test workflow, coding standards) are configured so the AI follows STAF patterns:
+
+- **Cursor:** [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) – applied automatically in this project.
+- **VS Code (GitHub Copilot):** [.github/copilot-instructions.md](.github/copilot-instructions.md) – used by Copilot for repo-level guidance.
+
 ---
 
 ## Technical Architecture
