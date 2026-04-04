@@ -10,7 +10,8 @@ Anyone using this project can see working samples of every major STAF feature an
 
 - [Features Covered](#features-covered)
 - [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
-- [Technical Architecture](#technical-architecture)
+- [Cursor rules and GitHub Copilot instructions](#cursor-rules-and-github-copilot-instructions)
+- [Documentation and architecture](#documentation-and-architecture)
 - [Release Notes](#release-notes)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
@@ -61,22 +62,81 @@ This repo includes an **MCP (Model Context Protocol) server** for Selenium + STA
 
 No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
 
-### AI instructions and rules
+---
 
-Framework rules (TestBaseClass, page objects, waits, tool usage, test workflow, coding standards) are configured so the AI follows STAF patterns:
+## Cursor rules and GitHub Copilot instructions
 
-- **Cursor:** [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) – applied automatically in this project.
-- **VS Code (GitHub Copilot):** [.github/copilot-instructions.md](.github/copilot-instructions.md) – used by Copilot for repo-level guidance.
+This repo ships **two instruction files** that tell AI assistants to follow STAF patterns (base classes, `FindAppElement`, `ReportResult`, no raw `Thread.Sleep`, Page Object workflow). They mirror each other so behavior stays consistent across tools.
+
+| Tool | File | How it is applied |
+|------|------|-------------------|
+| **Cursor** | [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) | Cursor loads rules from `.cursor/rules/` for this workspace. This rule is set to **always apply** (`alwaysApply: true` in the front matter), so Chat, Composer, and Agent use it without you naming the file. |
+| **GitHub Copilot** (VS Code / Visual Studio) | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Copilot reads **repository instructions** from this path when you work inside this repo. Keep the repo open as the workspace root so Copilot picks it up. |
+
+### How to use them (samples)
+
+**Cursor — Chat / Composer**
+
+You do not need to paste the rules file. Ask for work in natural language; Cursor already applies `staf-selenium-framework.mdc`.
+
+Example prompts:
+
+```text
+Add a new UI test method in ParaTests that logs in with invalid credentials and uses ReportResult for each step. Use LoginPage and the existing action pattern—no raw WebDriver in the test.
+```
+
+```text
+Create a new page class for the Parabank Register page under Pages/. Inherit PageBaseClass, use FindAppElement for locators, and add a short summary comment at the top.
+```
+
+```text
+Refactor this test to use ReportElementIsDisplayed instead of Assert.IsTrue on element.Displayed, and keep ReportResult for the scenario steps.
+```
+
+**Cursor — MCP + instructions**
+
+When the **selenium-staf** MCP server is enabled, you can combine runtime tools with the same rules:
+
+```text
+Use selenium-staf to open Chrome, go to the URL from run settings, then generate a STAF TestBaseClass test and a Page class that match our framework (FindAppElement, ReportResult).
+```
+
+**GitHub Copilot — VS Code**
+
+1. Open the **folder** `STAF.Selenium.Tests` (not only a single file) so `.github/copilot-instructions.md` is part of the workspace.
+2. In **inline chat** (Copilot Chat) or **Copilot Edits**, describe the task; Copilot uses the repo instructions automatically.
+
+Example prompts:
+
+```text
+@workspace Add an API test method in APITests that calls the users endpoint and uses ReportResultAPI Pass and Fail only—follow TestBaseAPI and existing patterns in this file.
+```
+
+```text
+In LoginPage.cs, add a method ClickForgotLogin that uses FindAppElement and does not instantiate the driver.
+```
+
+**GitHub Copilot — Visual Studio**
+
+Use **Copilot Chat** or **agent mode** with the solution open. Reference the same style of prompts; repository instructions apply when the Git repo root contains `.github/copilot-instructions.md`.
+
+**Tip:** If suggestions ignore STAF patterns, remind the model explicitly: *“Follow STAF rules: TestBaseClass, FindAppElement, ReportResult, no Thread.Sleep.”*
 
 ---
 
-## Technical Architecture
+## Documentation and architecture
 
-For **technical architecture**, **MCP Agent usage**, and **novelty summary** (suitable for attorney or technical architect review), see:
+| Document | Purpose |
+|----------|---------|
+| [docs/STAF-Framework-User-Guide.html](docs/STAF-Framework-User-Guide.html) | End-user guide: benefits, features, **HTML reporting**, architecture figures (Mermaid), novelty. Open in a browser or print to PDF. |
+| [docs/STAF-Framework-Architecture-and-User-Guide.pdf](docs/STAF-Framework-Architecture-and-User-Guide.pdf) | Same content as the user guide, **PDF with diagrams embedded** (regenerate from HTML if needed). |
+| [docs/README-PDF.md](docs/README-PDF.md) | How to regenerate the PDF (`npm install` + `npm run generate-pdf` in `docs/`). |
+| [docs/STAF-Framework-Architecture-and-Technical-Innovation.md](docs/STAF-Framework-Architecture-and-Technical-Innovation.md) | Formal architecture and technical innovation write-up (academic / legal style). |
+| [docs/Technical-Architecture.md](docs/Technical-Architecture.md) | Full technical architecture, MCP integration, novelty, architect checklist. |
+| [docs/Architecture-Diagram.md](docs/Architecture-Diagram.md) | Mermaid diagrams: system context, MCP tools, framework structure. |
+| [docs/Architecture-Summary.md](docs/Architecture-Summary.md) | One-page architecture summary. |
 
-- **[docs/Technical-Architecture.md](docs/Technical-Architecture.md)** – Full architecture, MCP integration, novelty, and architect checklist.
-- **[docs/Architecture-Diagram.md](docs/Architecture-Diagram.md)** – Mermaid diagrams (system context, MCP tools, framework structure).
-- **[docs/Architecture-Summary.md](docs/Architecture-Summary.md)** – One-page summary.
+If the PDF is not in your clone, open the HTML user guide in a browser and use **Print → Save as PDF**, or run `npm install` and `npm run generate-pdf` in the `docs/` folder (see [docs/README-PDF.md](docs/README-PDF.md)).
 
 ---
 
@@ -172,6 +232,14 @@ STAF.Selenium.Tests/
 ├── .vscode/
 │   ├── mcp.json               # VS Code MCP config (selenium-staf)
 │   └── settings.json          # dotnet.unitTests.runSettingsPath → runsettings (default for VS Code)
+├── docs/                      # Architecture docs, user guide (HTML/PDF), PDF build (see README-PDF.md)
+│   ├── STAF-Framework-User-Guide.html
+│   ├── STAF-Framework-Architecture-and-User-Guide.pdf
+│   ├── STAF-Framework-Architecture-and-Technical-Innovation.md
+│   ├── Technical-Architecture.md
+│   ├── Architecture-Diagram.md
+│   ├── Architecture-Summary.md
+│   └── package.json           # Optional: npm run generate-pdf
 ├── MCPAgent/                  # MCP server for Selenium + STAF
 │   ├── README.md
 │   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
