@@ -40,3 +40,8 @@ alwaysApply: true
 - Use **meaningful test names** that describe scenario or intent.
 - Follow **AAA (Arrange–Act–Assert)** in test methods.
 - **Do not duplicate** existing page/action methods; reuse and extend.
+
+## 5. Extended AI context (on demand)
+
+- For **few-shots**, folder map, parallel/reporting notes, and token discipline, attach **`docs/ai-instructions.md`** only when generating new pages, actions, or tests.
+- For **symbol → file** lookup and golden file paths, use **`docs/ai-index.json`** (machine-readable index). Keeps always-on rules short; pull depth via `@` when needed.

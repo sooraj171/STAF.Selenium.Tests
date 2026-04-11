@@ -39,3 +39,8 @@ When editing or generating code in this repo, follow these STAF Selenium framewo
 - Use **meaningful test names** that describe scenario or intent.
 - Follow **AAA (Arrange–Act–Assert)** in test methods.
 - **Do not duplicate** existing page/action methods; reuse and extend.
+
+## 5. Extended AI context (on demand)
+
+- Attach **`docs/ai-instructions.md`** when you need concise framework depth, few-shot snippets, or parallel/reporting reminders without loading the whole repo.
+- Use **`docs/ai-index.json`** to find which files to open for a feature (pages, actions, tests, DTOs). Prefer selective context over pasting the entire solution.

@@ -17,6 +17,6 @@ The project has been upgraded from **.NET 8** to **.NET 10**.
 | MSTest.TestAdapter | 4.0.2 | 4.1.0 |
 | RestSharp | 113.0.0 | 113.1.0 |
 | HtmlAgilityPack | 1.12.4 | 1.12.4 (unchanged) |
-| STAF.UI.API | 4.3.3 | 4.3.3 (unchanged) |
+| STAF.UI.API | 4.3.3 | 4.4.0 |
 
 Build and test execution have been verified on .NET 10.

@@ -135,8 +135,12 @@ Use **Copilot Chat** or **agent mode** with the solution open. Reference the sam
 | [docs/Technical-Architecture.md](docs/Technical-Architecture.md) | Full technical architecture, MCP integration, novelty, architect checklist. |
 | [docs/Architecture-Diagram.md](docs/Architecture-Diagram.md) | Mermaid diagrams: system context, MCP tools, framework structure. |
 | [docs/Architecture-Summary.md](docs/Architecture-Summary.md) | One-page architecture summary. |
+| [docs/ai-instructions.md](docs/ai-instructions.md) | **AI assistants:** concise framework rules, structure, few-shots, token discipline (use with `@` in Cursor). |
+| [docs/ai-index.json](docs/ai-index.json) | **AI assistants:** machine-readable map (class → file, relationships, golden example paths). |
 
 If the PDF is not in your clone, open the HTML user guide in a browser and use **Print → Save as PDF**, or run `npm install` and `npm run generate-pdf` in the `docs/` folder (see [docs/README-PDF.md](docs/README-PDF.md)).
+
+**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
 
 ---
 
@@ -245,7 +249,7 @@ STAF.Selenium.Tests/
 │   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
 │   └── build-mcp-agent.ps1    # Rebuild script
 └── STAFTests/
-    ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.3.3, MSTest, RestSharp, etc.
+    ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.4.0, MSTest, RestSharp, etc.
     ├── appsettings.json              # ConnectionStrings, Email
     ├── testrunsetting.runsettings     # Browser, URL, parallel, TestRunParameters
     ├── AssemblyInit.cs                # AssemblyInitialize/Cleanup → HTML summary
