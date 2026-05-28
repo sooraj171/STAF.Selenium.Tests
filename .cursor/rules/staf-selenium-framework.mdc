@@ -43,5 +43,8 @@ alwaysApply: true
 
 ## 5. Extended AI context (on demand)
 
-- For **few-shots**, folder map, parallel/reporting notes, and token discipline, attach **`docs/ai-instructions.md`** only when generating new pages, actions, or tests.
-- For **symbol → file** lookup and golden file paths, use **`docs/ai-index.json`** (machine-readable index). Keeps always-on rules short; pull depth via `@` when needed.
+- **Entry:** [AGENTS.md](../../AGENTS.md) — cross-tool summary (Cursor + Copilot).
+- **Symbol lookup:** `docs/ai-index.json` — attach only when locating or adding types.
+- **Depth / few-shots:** `docs/ai-instructions.md` — only when generating new pages, actions, or tests.
+- **Cursor skills:** `.cursor/skills/staf-*` — UI test, API test, page/action, context loading; see `docs/ai-setup.md`.
+- **Do not** load the whole solution; one golden `.cs` from `ai-index.json` → `goldenExamples` is enough.

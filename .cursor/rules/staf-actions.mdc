@@ -1,0 +1,15 @@
+---
+description: STAF action flows — inherit page, ReportResult, fluent API
+globs: STAFTests/Actions/**/*.cs
+alwaysApply: false
+---
+
+# Actions
+
+- Class inherits its page: `public class Login : LoginPage`
+- Ctor passes `(driver, TestContext)` to base
+- Steps: touch elements via page properties; report with `ReportResult.ReportResultPass/Fail(Driver, context, nameof(Method), "msg")`
+- Assertions on elements: `.ReportElementIsDisplayed(Driver, context, nameof(...), "msg", false)`
+- Return `this` or `new NextScreen(driver, context)` for fluent chains
+- **No** test assertions in actions except `Assert.Fail` after `ReportResultFail` on hard failures (match existing `Login.cs`)
+- Golden: `STAFTests/Actions/Login.cs`, `AboutUs.cs`

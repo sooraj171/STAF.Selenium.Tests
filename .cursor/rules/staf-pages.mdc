@@ -1,0 +1,15 @@
+---
+description: STAF page objects — PageBaseClass, locators, FindAppElement
+globs: STAFTests/Pages/**/*.cs
+alwaysApply: false
+---
+
+# Page objects
+
+- Class: `{Screen}Page` : `PageBaseClass`
+- Ctor: `public FooPage(IWebDriver driver, TestContext ctx) : base(driver, ctx)`
+- Locators: private strings in `#region ObjectIdentifierValues`
+- Elements: properties returning `FindAppElement(By.*)` — prefer `By.Id`, `By.Name`, `By.CssSelector`; XPath only if needed
+- **No** `new` driver; **no** `Thread.Sleep`
+- New pages: **do not** follow `GoogleHome` / `LinkedIn` plain POM — use `PageBaseClass`
+- Golden: `STAFTests/Pages/LoginPage.cs`

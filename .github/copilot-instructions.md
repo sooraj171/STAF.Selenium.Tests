@@ -1,46 +1,31 @@
-# Project instructions for GitHub Copilot (VS Code)
+# GitHub Copilot — STAF.Selenium.Tests
 
-When editing or generating code in this repo, follow these STAF Selenium framework rules.
+Repository instructions for **VS Code** and **Visual Studio**. Mirror of Cursor always-on rules; extended guide: [AGENTS.md](../AGENTS.md).
 
----
+## Framework
 
-## 1. Framework
+- UI tests: **TestBaseClass** | API/Excel/DB: **TestBaseAPI**
+- No `new` driver in tests/pages; no **Thread.Sleep** — use `FindAppElement`, `WaitForDocumentReady`
+- Pages: **PageBaseClass** + `FindAppElement` only (new work — not plain POM like `GoogleHome`)
+- New code: **NavigateTo**, **Click**, **EnterText**; assertions via **ReportResult** / **ReportElement*** / **ReportResultAPI**
 
-- All tests must inherit from **TestBaseClass** (UI) or **TestBaseAPI** (API/Excel/DB).
-- Driver must **never** be instantiated directly in tests or pages; use the base class driver.
-- All waits must use **framework wait helpers** (e.g. FindAppElement, WaitForDocumentReady); **no raw Thread.Sleep**.
-- Page objects must follow the project pattern: inherit **PageBaseClass**, use **FindAppElement(By)** / **FindAppElement(parent, By, description)**.
-- This prevents generic Selenium code and keeps reporting and cleanup consistent.
+## Workflow
 
-## 2. Tool usage (MCP / code generation)
+1. Find page in `STAFTests/Pages/` → else create `*Page`
+2. Add flow in `STAFTests/Actions/` (inherit page)
+3. Thin test in `STAFTests/Tests/` calling actions only
+4. Reuse existing methods; AAA; stable locators (id, data-testid, CSS)
 
-- When navigating → use **NavigateTo(url)** (or framework equivalent), not raw driver.Navigate().
-- When clicking → use **Click(locator)** or page/action methods that wrap it.
-- When typing → use **EnterText(locator, text)** or page/action methods.
-- When validating → use the **framework assertion wrapper** (e.g. ReportElement, ReportElementIsDisplayed).
-- When handling dropdowns → use **framework utility**, not raw Select(driver.FindElement(...)).
-- Generated code must use the project’s abstraction layer; do not bypass it.
+## Token discipline
 
-## 3. Test creation workflow
+| Need | Open |
+|------|------|
+| Quick rules | This file (auto-loaded) |
+| Agent overview | `AGENTS.md` |
+| Class → file | `docs/ai-index.json` |
+| Few-shots / parallel | `docs/ai-instructions.md` |
+| Copy-paste prompts | `docs/ai-prompts.md` |
 
-1. **Identify page** – Determine which page/screen the test needs.
-2. **Check if Page Object exists** – Look in Pages/ (e.g. LoginPage, AboutUsPage).
-3. **If not, create Page Object** – Use PageBaseClass, add locators and FindAppElement-based methods.
-4. **Add locators** in the **centralized location** (page class or shared locators as per project).
-5. **Add reusable methods** on the page/action classes (no raw driver in tests).
-6. **Write test** using **page/action methods only**; test class inherits TestBaseClass.
-7. **Add assertions** using the **framework wrapper** (ReportResult, ReportElement).
+Golden: `LoginPage.cs` + `Actions/Login.cs` + `Tests/ParaTests.cs` (UI) | `Requests/CreateRequests.cs` + `Tests/APITests.cs` (API).
 
-## 4. Coding standards
-
-- Use **explicit locators only** (By.Id, By.CssSelector, By.XPath only when necessary).
-- Prefer **data-testid** or stable attributes when available.
-- **Avoid brittle XPath** (e.g. long positional paths); prefer ID, data-testid, or short CSS.
-- Use **meaningful test names** that describe scenario or intent.
-- Follow **AAA (Arrange–Act–Assert)** in test methods.
-- **Do not duplicate** existing page/action methods; reuse and extend.
-
-## 5. Extended AI context (on demand)
-
-- Attach **`docs/ai-instructions.md`** when you need concise framework depth, few-shot snippets, or parallel/reporting reminders without loading the whole repo.
-- Use **`docs/ai-index.json`** to find which files to open for a feature (pages, actions, tests, DTOs). Prefer selective context over pasting the entire solution.
+**Cursor users:** project skills in `.cursor/skills/` and file rules in `.cursor/rules/` — see [docs/ai-setup.md](../docs/ai-setup.md).
