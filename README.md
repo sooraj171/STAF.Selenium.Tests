@@ -10,7 +10,8 @@ Anyone using this project can see working samples of every major STAF feature an
 
 - [Features Covered](#features-covered)
 - [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
-- [Cursor rules and GitHub Copilot instructions](#cursor-rules-and-github-copilot-instructions)
+- [AI-assisted development](#ai-assisted-development-cursor-vs-code-visual-studio)
+  - [Skills quick chat sheet](#skills-quick-chat-sheet)
 - [Documentation and architecture](#documentation-and-architecture)
 - [Release Notes](#release-notes)
 - [Prerequisites](#prerequisites)
@@ -64,14 +65,40 @@ No .NET SDK is required to run the MCP server – the exe is self-contained. See
 
 ---
 
-## Cursor rules and GitHub Copilot instructions
+## AI-assisted development (Cursor, VS Code, Visual Studio)
 
-This repo ships **two instruction files** that tell AI assistants to follow STAF patterns (base classes, `FindAppElement`, `ReportResult`, no raw `Thread.Sleep`, Page Object workflow). They mirror each other so behavior stays consistent across tools.
+Layered instructions keep **token use low** while enforcing STAF patterns (`TestBaseClass`, `FindAppElement`, `ReportResult`, no `Thread.Sleep`).
 
-| Tool | File | How it is applied |
-|------|------|-------------------|
-| **Cursor** | [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) | Cursor loads rules from `.cursor/rules/` for this workspace. This rule is set to **always apply** (`alwaysApply: true` in the front matter), so Chat, Composer, and Agent use it without you naming the file. |
-| **GitHub Copilot** (VS Code / Visual Studio) | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Copilot reads **repository instructions** from this path when you work inside this repo. Keep the repo open as the workspace root so Copilot picks it up. |
+| Layer | Path | When it loads |
+|-------|------|----------------|
+| **Agent entry (all tools)** | [AGENTS.md](AGENTS.md) | Reference for any AI agent; golden files + token discipline |
+| **Always-on** | [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) (Cursor) · [.github/copilot-instructions.md](.github/copilot-instructions.md) (Copilot) | Every chat in this repo |
+| **File-scoped (Cursor)** | `.cursor/rules/staf-pages.mdc`, `staf-actions.mdc`, `staf-tests.mdc` | When editing matching `STAFTests/**` files |
+| **Skills (Cursor)** | [.cursor/skills/](.cursor/skills/) | On-demand workflows: UI test, API test, page/action, context loading |
+| **Deep context** | [docs/ai-instructions.md](docs/ai-instructions.md) · [docs/ai-index.json](docs/ai-index.json) | Attach with `@` only when generating new types |
+| **Setup & prompts** | [docs/ai-setup.md](docs/ai-setup.md) · [docs/ai-prompts.md](docs/ai-prompts.md) | Onboarding and copy-paste prompts |
+
+| Tool | Primary file | How it is applied |
+|------|--------------|-------------------|
+| **Cursor** | `.cursor/rules/*.mdc` + `.cursor/skills/staf-*` | Rules auto-apply; skills discovered from `description` or invoked by name |
+| **GitHub Copilot** (VS Code / Visual Studio) | `.github/copilot-instructions.md` | Repo instructions when workspace root is this repository |
+
+### Skills quick chat sheet
+
+Use this table to pick the right workflow. **Cursor** loads project skills from `.cursor/skills/` (Agent discovers them from your message, or type **`/`** in Chat and pick the skill name). **Copilot** has no skills folder—use the same **example prompt** column with `@workspace` and optional `@` files from [docs/ai-prompts.md](docs/ai-prompts.md).
+
+| Skill | Use when you want to… | How to invoke (Cursor) | Example chat prompt | Copilot (VS Code / VS) — same intent |
+|-------|------------------------|-------------------------|---------------------|--------------------------------------|
+| **`staf-ui-test`** | Add or change a **UI** `[TestMethod]` (`TestBaseClass`, Action chains, `NavigateTo`) | `/staf-ui-test` or say *"use staf-ui-test skill"* | *Add a test in ParaTests: invalid login, use Login action only, no raw WebDriver.* | `@workspace` + `@STAFTests/Actions/Login.cs` — same prompt |
+| **`staf-api-test`** | Add or change an **API** test (`TestBaseAPI`, `CreateRequests`, `ReportResultAPI`) | `/staf-api-test` | *Add APITests method: GET users page 1, assert DTO, ReportResultAPI Pass/Fail.* | `@workspace` + `@STAFTests/Tests/APITests.cs` |
+| **`staf-page-action`** | Create a new **Page** (`*Page`) and **Action** flow (`PageBaseClass`, `FindAppElement`, fluent returns) | `/staf-page-action` | *Create RegisterPage + Register action like LoginPage/Login; update ai-index.json.* | `@workspace` + `@STAFTests/Pages/LoginPage.cs` + `@STAFTests/Actions/Login.cs` |
+| **`staf-ai-context`** | **Save tokens** — which files to attach before a big codegen task | `/staf-ai-context` or ask *"what should I @ for a new page?"* | *I need a new Parabank screen test—what files should I attach, minimum context?* | Open [AGENTS.md](AGENTS.md) golden-files table; attach **one** golden `.cs` only |
+| *(no skill)* | Rules only — small edit, refactor, explain code | Nothing extra; always-on rules apply | *Refactor this method to use ReportElementIsDisplayed.* | Repo instructions auto-apply; add *Follow STAF rules…* if output drifts |
+| *(no skill)* | **Deep framework** detail (parallel, reporting map, few-shots) | `@docs/ai-instructions.md` | *@docs/ai-instructions.md Add Excel test following ExcelTests pattern.* | `@docs/ai-instructions.md` in Copilot Chat |
+| *(no skill)* | Find class/file before coding | `@docs/ai-index.json` | *@docs/ai-index.json Where is AccountsOverview defined?* | Same `@docs/ai-index.json` |
+| **MCP + STAF** | Drive browser, then generate STAF code | Enable **selenium-staf** MCP (see [MCP Agent](#mcp-agent-ai-assisted-development)) | *Use selenium-staf to open purl, then generate TestBaseClass test + PageBaseClass page.* | MCP in VS Code/VS per [MCPAgent/README.md](MCPAgent/README.md); same prompt in agent mode |
+
+**Token tip:** For any row above, prefer **one** golden file (`Login.cs`, `APITests.cs`, …) over attaching the whole `STAFTests` folder. More prompts: [docs/ai-prompts.md](docs/ai-prompts.md) · Full setup: [docs/ai-setup.md](docs/ai-setup.md).
 
 ### How to use them (samples)
 
@@ -135,8 +162,15 @@ Use **Copilot Chat** or **agent mode** with the solution open. Reference the sam
 | [docs/Technical-Architecture.md](docs/Technical-Architecture.md) | Full technical architecture, MCP integration, novelty, architect checklist. |
 | [docs/Architecture-Diagram.md](docs/Architecture-Diagram.md) | Mermaid diagrams: system context, MCP tools, framework structure. |
 | [docs/Architecture-Summary.md](docs/Architecture-Summary.md) | One-page architecture summary. |
+| [AGENTS.md](AGENTS.md) | **AI assistants:** repo-root entry — rules, golden files, token discipline (Cursor + Copilot). |
+| [docs/ai-setup.md](docs/ai-setup.md) | **AI assistants:** Cursor skills, file rules, MCP, VS Code Copilot tips. |
+| [docs/ai-prompts.md](docs/ai-prompts.md) | **AI assistants:** copy-paste prompts for common automation tasks. |
+| [docs/ai-instructions.md](docs/ai-instructions.md) | **AI assistants:** concise framework depth, few-shots (attach with `@` only when needed). |
+| [docs/ai-index.json](docs/ai-index.json) | **AI assistants:** machine-readable map (class → file, relationships, golden example paths). |
 
 If the PDF is not in your clone, open the HTML user guide in a browser and use **Print → Save as PDF**, or run `npm install` and `npm run generate-pdf` in the `docs/` folder (see [docs/README-PDF.md](docs/README-PDF.md)).
+
+**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
 
 ---
 
@@ -228,7 +262,12 @@ STAF.Selenium.Tests/
 ├── STAF.Selenium.Tests.sln
 ├── .mcp.json                  # MCP config for Visual Studio (selenium-staf; source-controlled)
 ├── nuget.config
-├── .cursor/mcp.json           # Cursor MCP config (selenium-staf)
+├── AGENTS.md                  # AI agent entry (Cursor, Copilot, others)
+├── .cursor/
+│   ├── mcp.json               # Cursor MCP config (selenium-staf)
+│   ├── rules/                 # Always-on + file-scoped STAF rules
+│   └── skills/                # On-demand UI/API/page/context workflows
+├── .github/copilot-instructions.md  # Copilot repo instructions (VS Code / VS)
 ├── .vscode/
 │   ├── mcp.json               # VS Code MCP config (selenium-staf)
 │   └── settings.json          # dotnet.unitTests.runSettingsPath → runsettings (default for VS Code)
@@ -245,7 +284,7 @@ STAF.Selenium.Tests/
 │   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
 │   └── build-mcp-agent.ps1    # Rebuild script
 └── STAFTests/
-    ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.3.3, MSTest, RestSharp, etc.
+    ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.4.0, MSTest, RestSharp, etc.
     ├── appsettings.json              # ConnectionStrings, Email
     ├── testrunsetting.runsettings     # Browser, URL, parallel, TestRunParameters
     ├── AssemblyInit.cs                # AssemblyInitialize/Cleanup → HTML summary

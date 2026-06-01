@@ -1,0 +1,19 @@
+---
+description: STAF test classes — TestBaseClass vs TestBaseAPI, thin tests
+globs: STAFTests/Tests/**/*.cs
+alwaysApply: false
+---
+
+# Tests
+
+| Base | Use for |
+|------|---------|
+| `TestBaseClass` | Browser UI (`ParaTests`, `GoogleSearchTest`, …) |
+| `TestBaseAPI` | REST, Excel, DB, programmatic reports |
+
+- `[TestClass]` / `[TestMethod]`; **AAA**; meaningful names
+- UI: `NavigateTo` + Action classes — **no** locators or `SendKeys` in test body for new code
+- Config: `TestContext.Properties["key"]` (keys in `testrunsetting.runsettings`)
+- API: `ReportResultAPI`; reuse `Requests/` + `APIData/`
+- Parallel-safe: no shared mutable static state; unique temp paths for Excel/files
+- Golden UI: `ParaTests.cs` — Golden API: `APITests.cs`

@@ -40,3 +40,11 @@ alwaysApply: true
 - Use **meaningful test names** that describe scenario or intent.
 - Follow **AAA (Arrange–Act–Assert)** in test methods.
 - **Do not duplicate** existing page/action methods; reuse and extend.
+
+## 5. Extended AI context (on demand)
+
+- **Entry:** [AGENTS.md](../../AGENTS.md) — cross-tool summary (Cursor + Copilot).
+- **Symbol lookup:** `docs/ai-index.json` — attach only when locating or adding types.
+- **Depth / few-shots:** `docs/ai-instructions.md` — only when generating new pages, actions, or tests.
+- **Cursor skills:** `.cursor/skills/staf-*` — UI test, API test, page/action, context loading; see `docs/ai-setup.md`.
+- **Do not** load the whole solution; one golden `.cs` from `ai-index.json` → `goldenExamples` is enough.
