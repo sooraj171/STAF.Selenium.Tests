@@ -44,7 +44,9 @@ alwaysApply: true
 ## 5. Extended AI context (on demand)
 
 - **Entry:** [AGENTS.md](../../AGENTS.md) — cross-tool summary (Cursor + Copilot).
-- **Symbol lookup:** `docs/ai-index.json` — attach only when locating or adding types.
-- **Depth / few-shots:** `docs/ai-instructions.md` — only when generating new pages, actions, or tests.
-- **Cursor skills:** `.cursor/skills/staf-*` — UI test, API test, page/action, context loading; see `docs/ai-setup.md`.
+- **Master guide:** `docs/ai/AI_GUIDE.md` — workflows and templates; `docs/ai/QUICK_START.md` for tasks.
+- **Symbol lookup:** `docs/ai/ai-index.json` — attach only when locating or adding types.
+- **Depth / few-shots:** `docs/ai/ai-instructions.md` — only when generating new pages, actions, or tests.
+- **Cursor skills:** `.cursor/skills/staf-*` — index `.cursor/skills/MASTER.md`; see `docs/ai/ai-setup.md`.
+- **Visual Studio agents:** `.github/agents/staf-ui-automation.agent.md`, `staf-api-automation.agent.md`.
 - **Do not** load the whole solution; one golden `.cs` from `ai-index.json` → `goldenExamples` is enough.

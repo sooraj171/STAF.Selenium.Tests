@@ -1,0 +1,12 @@
+{
+  "name": "staf-docs-pdf",
+  "version": "1.0.0",
+  "description": "Generate STAF Framework User Guide PDF from HTML",
+  "private": true,
+  "scripts": {
+    "generate-pdf": "node generate-pdf.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^23.0.0"
+  }
+}

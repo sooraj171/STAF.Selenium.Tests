@@ -1,322 +1,115 @@
 # STAF.Selenium.Tests
 
-**STAF.Selenium.Tests** is the official sample and reference implementation for the [STAF.UI.API](https://www.nuget.org/packages/STAF.UI.API) NuGet package. It demonstrates how to use [STAF](https://github.com/sooraj171/STAF) (Simple Test Automation Framework) for UI automation, API tests, Excel validation, database helpers, reporting, accessibility, and more.
-
-Anyone using this project can see working samples of every major STAF feature and quickly adopt the framework in their own test suites.
-
----
-
-## Table of Contents
-
-- [Features Covered](#features-covered)
-- [MCP Agent (AI-Assisted Development)](#mcp-agent-ai-assisted-development)
-- [AI-assisted development](#ai-assisted-development-cursor-vs-code-visual-studio)
-  - [Skills quick chat sheet](#skills-quick-chat-sheet)
-- [Documentation and architecture](#documentation-and-architecture)
-- [Release Notes](#release-notes)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Test Samples Overview](#test-samples-overview)
-- [Project Structure](#project-structure)
-- [Running Tests](#running-tests)
-- [License](#license)
-
----
-
-## Features Covered
-
-| STAF Feature | Description | Sample Location |
-|-------------|-------------|-----------------|
-| **TestBaseClass** | UI test base: WebDriver init, HTML reporting, cleanup | `GoogleSearchTest`, `ParaTests`, `ReportingSamplesTests`, `WebDriverExtensionsSamplesTests`, `BrowserOverrideSamplesTests` |
-| **TestBaseAPI** | API test base: same reporting/cleanup, no browser | `APITests`, `ExcelTests`, `DatabaseSamplesTests`, `ProgrammaticReportSamplesTests` |
-| **PageBaseClass** | Page Object with wait: `FindAppElement(By)`, `FindAppElement(parent, By, description)` | `LoginPage`, `AboutUsPage`, `AccountsOverviewPage` |
-| **ReportResult** | UI step reporting: Pass, Fail, Warn, Info | `ReportingSamplesTests`, `Login`, `GoogleHome`, etc. |
-| **ReportResultAPI** | API step reporting: Pass, Fail, Warn, Info | `APITests`, `ExcelTests`, `DatabaseSamplesTests` |
-| **ReportElement** | Assert + report: ReportElementExists, IsDisplayed, IsEnabled | `ReportingSamplesTests`, `Login`, `AboutUs`, `AccountsOverview` |
-| **HTML reporting** | Per-test and assembly summary (ResultTemplateFinal.html) | All tests via `AssemblyInit` |
-| **ExcelDriver** | CompareFiles, GetExcelWorkbook, GetExcelCellData, SetExcelCellData, GetExcelRowCount, GetExcelColumnCount | `ExcelTests` |
-| **DbHelper** | Connection from config, VerifyConnection, ExecuteScalar, ExecuteQuery, ExecuteNonQuery | `DatabaseSamplesTests` |
-| **WebDriver extensions** | WaitForDocumentReady, getTotalTabsCount, CloseAllTabsExceptCurrent, waitForFindElement | `WebDriverExtensionsSamplesTests` |
-| **Browser override** | SetChromeOptions, SetEdgeOptions, GetBrowserDriverObject | `BrowserOverrideSamplesTests` (commented examples) |
-| **Accessibility (Axe)** | AnalyzePage, AnalyzePageAndSaveHtml, AnalyzeCssSelector, AnalyzeElement | `ParaTests` (LoginToApp) |
-| **Configuration** | appsettings.json, run settings (browser, url, TestRunParameters) | `appsettings.json`, `testrunsetting.runsettings` |
-| **Parallel execution** | MSTest Parallelize (Workers, Scope) | `testrunsetting.runsettings` |
-
----
-
-## MCP Agent (AI-Assisted Development)
-
-This repo includes an **MCP (Model Context Protocol) server** for Selenium + STAF. Use it with **Cursor** or **VS Code** to:
-
-- **Control browsers** – Start Chrome/Edge/Firefox, navigate, click, type, take screenshots
-- **Generate STAF code** – Produce C# Selenium tests (Page Object Model, ReportResult, TestBaseClass)
-
-### Quick Start
-
-1. **Clone and open** the solution in Cursor, VS Code, or **Visual Studio** (Professional / 2022 17.14+).
-2. **MCP is preconfigured** for all supported editors:
-   - **Cursor / VS Code:** `.cursor/mcp.json` and `.vscode/mcp.json` point to `MCPAgent/publish/mcp-sharp-staf-selenium.exe`.
-   - **Visual Studio:** repo-root `.mcp.json` is picked up automatically (GitHub Copilot → Agent mode). Get latest and open the solution; no extra config needed.
-3. **Restart** the editor (or reload Copilot in VS) so the **selenium-staf** server loads.
-4. Use AI to run browser automation or generate STAF-style tests from natural language.
-
-No .NET SDK is required to run the MCP server – the exe is self-contained. See [MCPAgent/README.md](MCPAgent/README.md) for details, tool list, and troubleshooting.
-
----
-
-## AI-assisted development (Cursor, VS Code, Visual Studio)
-
-Layered instructions keep **token use low** while enforcing STAF patterns (`TestBaseClass`, `FindAppElement`, `ReportResult`, no `Thread.Sleep`).
-
-| Layer | Path | When it loads |
-|-------|------|----------------|
-| **Agent entry (all tools)** | [AGENTS.md](AGENTS.md) | Reference for any AI agent; golden files + token discipline |
-| **Always-on** | [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) (Cursor) · [.github/copilot-instructions.md](.github/copilot-instructions.md) (Copilot) | Every chat in this repo |
-| **File-scoped (Cursor)** | `.cursor/rules/staf-pages.mdc`, `staf-actions.mdc`, `staf-tests.mdc` | When editing matching `STAFTests/**` files |
-| **Skills (Cursor)** | [.cursor/skills/](.cursor/skills/) | On-demand workflows: UI test, API test, page/action, context loading |
-| **Deep context** | [docs/ai-instructions.md](docs/ai-instructions.md) · [docs/ai-index.json](docs/ai-index.json) | Attach with `@` only when generating new types |
-| **Setup & prompts** | [docs/ai-setup.md](docs/ai-setup.md) · [docs/ai-prompts.md](docs/ai-prompts.md) | Onboarding and copy-paste prompts |
-
-| Tool | Primary file | How it is applied |
-|------|--------------|-------------------|
-| **Cursor** | `.cursor/rules/*.mdc` + `.cursor/skills/staf-*` | Rules auto-apply; skills discovered from `description` or invoked by name |
-| **GitHub Copilot** (VS Code / Visual Studio) | `.github/copilot-instructions.md` | Repo instructions when workspace root is this repository |
-
-### Skills quick chat sheet
-
-Use this table to pick the right workflow. **Cursor** loads project skills from `.cursor/skills/` (Agent discovers them from your message, or type **`/`** in Chat and pick the skill name). **Copilot** has no skills folder—use the same **example prompt** column with `@workspace` and optional `@` files from [docs/ai-prompts.md](docs/ai-prompts.md).
-
-| Skill | Use when you want to… | How to invoke (Cursor) | Example chat prompt | Copilot (VS Code / VS) — same intent |
-|-------|------------------------|-------------------------|---------------------|--------------------------------------|
-| **`staf-ui-test`** | Add or change a **UI** `[TestMethod]` (`TestBaseClass`, Action chains, `NavigateTo`) | `/staf-ui-test` or say *"use staf-ui-test skill"* | *Add a test in ParaTests: invalid login, use Login action only, no raw WebDriver.* | `@workspace` + `@STAFTests/Actions/Login.cs` — same prompt |
-| **`staf-api-test`** | Add or change an **API** test (`TestBaseAPI`, `CreateRequests`, `ReportResultAPI`) | `/staf-api-test` | *Add APITests method: GET users page 1, assert DTO, ReportResultAPI Pass/Fail.* | `@workspace` + `@STAFTests/Tests/APITests.cs` |
-| **`staf-page-action`** | Create a new **Page** (`*Page`) and **Action** flow (`PageBaseClass`, `FindAppElement`, fluent returns) | `/staf-page-action` | *Create RegisterPage + Register action like LoginPage/Login; update ai-index.json.* | `@workspace` + `@STAFTests/Pages/LoginPage.cs` + `@STAFTests/Actions/Login.cs` |
-| **`staf-ai-context`** | **Save tokens** — which files to attach before a big codegen task | `/staf-ai-context` or ask *"what should I @ for a new page?"* | *I need a new Parabank screen test—what files should I attach, minimum context?* | Open [AGENTS.md](AGENTS.md) golden-files table; attach **one** golden `.cs` only |
-| *(no skill)* | Rules only — small edit, refactor, explain code | Nothing extra; always-on rules apply | *Refactor this method to use ReportElementIsDisplayed.* | Repo instructions auto-apply; add *Follow STAF rules…* if output drifts |
-| *(no skill)* | **Deep framework** detail (parallel, reporting map, few-shots) | `@docs/ai-instructions.md` | *@docs/ai-instructions.md Add Excel test following ExcelTests pattern.* | `@docs/ai-instructions.md` in Copilot Chat |
-| *(no skill)* | Find class/file before coding | `@docs/ai-index.json` | *@docs/ai-index.json Where is AccountsOverview defined?* | Same `@docs/ai-index.json` |
-| **MCP + STAF** | Drive browser, then generate STAF code | Enable **selenium-staf** MCP (see [MCP Agent](#mcp-agent-ai-assisted-development)) | *Use selenium-staf to open purl, then generate TestBaseClass test + PageBaseClass page.* | MCP in VS Code/VS per [MCPAgent/README.md](MCPAgent/README.md); same prompt in agent mode |
-
-**Token tip:** For any row above, prefer **one** golden file (`Login.cs`, `APITests.cs`, …) over attaching the whole `STAFTests` folder. More prompts: [docs/ai-prompts.md](docs/ai-prompts.md) · Full setup: [docs/ai-setup.md](docs/ai-setup.md).
-
-### How to use them (samples)
-
-**Cursor — Chat / Composer**
-
-You do not need to paste the rules file. Ask for work in natural language; Cursor already applies `staf-selenium-framework.mdc`.
-
-Example prompts:
-
-```text
-Add a new UI test method in ParaTests that logs in with invalid credentials and uses ReportResult for each step. Use LoginPage and the existing action pattern—no raw WebDriver in the test.
-```
-
-```text
-Create a new page class for the Parabank Register page under Pages/. Inherit PageBaseClass, use FindAppElement for locators, and add a short summary comment at the top.
-```
-
-```text
-Refactor this test to use ReportElementIsDisplayed instead of Assert.IsTrue on element.Displayed, and keep ReportResult for the scenario steps.
-```
-
-**Cursor — MCP + instructions**
-
-When the **selenium-staf** MCP server is enabled, you can combine runtime tools with the same rules:
-
-```text
-Use selenium-staf to open Chrome, go to the URL from run settings, then generate a STAF TestBaseClass test and a Page class that match our framework (FindAppElement, ReportResult).
-```
-
-**GitHub Copilot — VS Code**
-
-1. Open the **folder** `STAF.Selenium.Tests` (not only a single file) so `.github/copilot-instructions.md` is part of the workspace.
-2. In **inline chat** (Copilot Chat) or **Copilot Edits**, describe the task; Copilot uses the repo instructions automatically.
-
-Example prompts:
-
-```text
-@workspace Add an API test method in APITests that calls the users endpoint and uses ReportResultAPI Pass and Fail only—follow TestBaseAPI and existing patterns in this file.
-```
-
-```text
-In LoginPage.cs, add a method ClickForgotLogin that uses FindAppElement and does not instantiate the driver.
-```
-
-**GitHub Copilot — Visual Studio**
-
-Use **Copilot Chat** or **agent mode** with the solution open. Reference the same style of prompts; repository instructions apply when the Git repo root contains `.github/copilot-instructions.md`.
-
-**Tip:** If suggestions ignore STAF patterns, remind the model explicitly: *“Follow STAF rules: TestBaseClass, FindAppElement, ReportResult, no Thread.Sleep.”*
-
----
-
-## Documentation and architecture
-
-| Document | Purpose |
-|----------|---------|
-| [docs/STAF-Framework-User-Guide.html](docs/STAF-Framework-User-Guide.html) | End-user guide: benefits, features, **HTML reporting**, architecture figures (Mermaid), novelty. Open in a browser or print to PDF. |
-| [docs/STAF-Framework-Architecture-and-User-Guide.pdf](docs/STAF-Framework-Architecture-and-User-Guide.pdf) | Same content as the user guide, **PDF with diagrams embedded** (regenerate from HTML if needed). |
-| [docs/README-PDF.md](docs/README-PDF.md) | How to regenerate the PDF (`npm install` + `npm run generate-pdf` in `docs/`). |
-| [docs/STAF-Framework-Architecture-and-Technical-Innovation.md](docs/STAF-Framework-Architecture-and-Technical-Innovation.md) | Formal architecture and technical innovation write-up (academic / legal style). |
-| [docs/Technical-Architecture.md](docs/Technical-Architecture.md) | Full technical architecture, MCP integration, novelty, architect checklist. |
-| [docs/Architecture-Diagram.md](docs/Architecture-Diagram.md) | Mermaid diagrams: system context, MCP tools, framework structure. |
-| [docs/Architecture-Summary.md](docs/Architecture-Summary.md) | One-page architecture summary. |
-| [AGENTS.md](AGENTS.md) | **AI assistants:** repo-root entry — rules, golden files, token discipline (Cursor + Copilot). |
-| [docs/ai-setup.md](docs/ai-setup.md) | **AI assistants:** Cursor skills, file rules, MCP, VS Code Copilot tips. |
-| [docs/ai-prompts.md](docs/ai-prompts.md) | **AI assistants:** copy-paste prompts for common automation tasks. |
-| [docs/ai-instructions.md](docs/ai-instructions.md) | **AI assistants:** concise framework depth, few-shots (attach with `@` only when needed). |
-| [docs/ai-index.json](docs/ai-index.json) | **AI assistants:** machine-readable map (class → file, relationships, golden example paths). |
-
-If the PDF is not in your clone, open the HTML user guide in a browser and use **Print → Save as PDF**, or run `npm install` and `npm run generate-pdf` in the `docs/` folder (see [docs/README-PDF.md](docs/README-PDF.md)).
-
-**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
-
----
-
-## Release Notes
-
-The project has been **upgraded to .NET 10**. For details (target framework change, dependency updates), see **[RELEASE_NOTES.md](RELEASE_NOTES.md)**.
+Official sample and reference solution for [STAF.UI.API](https://www.nuget.org/packages/STAF.UI.API) — UI automation (Selenium), REST API tests, Excel and database helpers, HTML reporting, and accessibility checks using [STAF](https://github.com/sooraj171/STAF).
 
 ---
 
 ## Prerequisites
 
-- **.NET 10 SDK**
-- **Visual Studio 2022** (or later) or **VS Code** with C# extension
-- **Chrome** or **Edge** (for UI tests)
-- **MSTest** (included via package reference)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- Visual Studio 2022+, or VS Code with C# Dev Kit
+- Chrome or Edge (UI tests)
 
 ---
 
-## Getting Started
+## Quick start
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/sooraj171/STAF.Selenium.Tests
-   cd STAF.Selenium.Tests
-   ```
+```bash
+git clone https://github.com/sooraj171/STAF.Selenium.Tests
+cd STAF.Selenium.Tests
+dotnet restore
+dotnet build
+dotnet test --settings STAFTests/testrunsetting.runsettings
+```
 
-2. **Restore and build**
-   ```bash
-   dotnet restore
-   dotnet build
-   ```
+**Run settings:** The project defaults to `STAFTests/testrunsetting.runsettings`. In Visual Studio, use **Test → Configure Run Settings → Select Solution Wide runsettings File** if tests do not pick it up automatically.
 
-3. **Run settings (optional)**  
-   The runsettings file is set by default: the project file points to `STAFTests\testrunsetting.runsettings`, and `.vscode/settings.json` configures it for VS Code. If you run tests and see a message that run settings may not be set, configure explicitly:
-   - **VS Code:** ensure `.vscode/settings.json` has `"dotnet.unitTests.runSettingsPath"` (already set in this repo).
-   - **Visual Studio:** **Test** → **Configure Run Settings** → **Select Solution Wide runsettings File** → `STAFTests\testrunsetting.runsettings`.
-   - **CLI:** `dotnet test --settings STAFTests\testrunsetting.runsettings` (or rely on the project default).
+**Configuration:** URLs, browser, and credentials are in `STAFTests/testrunsetting.runsettings` (`purl`, `userName`, `password`, …) and `STAFTests/appsettings.json` (database connection, optional email).
 
-4. **Run tests**
-   - From IDE: **Test Explorer** → select tests → **Run**
-   - From CLI: `dotnet test --settings STAFTests\testrunsetting.runsettings`
+After a run, open **TestResults** for per-test HTML reports and the assembly summary (`ResultTemplateFinal.html`).
 
 ---
 
-## Configuration
+## What’s in the solution
 
-### Run settings (`STAFTests\testrunsetting.runsettings`)
+| Area | Examples |
+|------|----------|
+| **UI tests** | `ParaTests`, `GoogleSearchTest`, `ReportingSamplesTests`, `WebDriverExtensionsSamplesTests` |
+| **API / data** | `APITests`, `ExcelTests`, `DatabaseSamplesTests` |
+| **Page objects** | `LoginPage`, `AboutUsPage`, `AccountsOverviewPage` (`PageBaseClass`, `FindAppElement`) |
+| **Actions** | `Login`, `AboutUs`, `AccountsOverview` — fluent flows with `ReportResult` |
+| **Reporting** | `ReportResult`, `ReportElement*`, `ReportResultAPI` |
+| **Accessibility** | Axe in `ParaTests.LoginToApp` |
+| **Parallel runs** | MSTest `Parallelize` in run settings |
 
-- **TestRunParameters**: `browser` (e.g. `chrome`), `driverPath`, `url`, `purl` (Parabank), `searchText`, `userName`, `password`, `project`
-- **MSTest**: `Parallelize` (e.g. `Workers=4`, `Scope=MethodLevel`)
-- **ResultsDirectory**: e.g. `.\TestResults`
+See [RELEASE_NOTES.md](RELEASE_NOTES.md) for framework and .NET 10 upgrade notes.
 
-### appsettings.json (`STAFTests\appsettings.json`)
-
-- **ConnectionStrings**: `DefaultConnection` for DbHelper (e.g. SQL Server / LocalDB)
-- **Email**: SmtpHost, SmtpPort, UseDefaultCred, Username, Password (optional; for emailing results)
-
----
-
-## Test Samples Overview
-
-### UI tests (TestBaseClass)
-
-- **GoogleSearchTest** – Page Object flow: Google search → first result → LinkedIn (ReportResult, navigation).
-- **ParaTests** – Parabank: login, invalid login, About Us; **AxeAccessibility** (AnalyzePageAndSaveHtml); **ReportElement** and **ReportResult**.
-- **ReportingSamplesTests** – ReportResult Pass/Fail/Warn/Info; ReportElement (Exists, IsDisplayed, IsEnabled).
-- **WebDriverExtensionsSamplesTests** – WaitForDocumentReady; single-tab flow (getTotalTabsCount/CloseAllTabsExceptCurrent documented in code).
-- **BrowserOverrideSamplesTests** – Default browser run; commented examples for SetChromeOptions and GetBrowserDriverObject.
-
-### API tests (TestBaseAPI)
-
-- **APITests** – REST (reqres.in): verify user details; **ReportResultAPI** Pass/Fail/Warn/Info sample.
-- **ExcelTests** – **ExcelDriver**: CompareFiles; GetExcelWorkbook, GetExcelCellData, SetExcelCellData, GetExcelRowCount, GetExcelColumnCount.
-- **DatabaseSamplesTests** – **DbHelper**: VerifyConnection, ExecuteScalar (when DefaultConnection is configured).
-- **ProgrammaticReportSamplesTests** – Documented use of TestReportGenerator and TestResultData for custom HTML reports.
-
-### Pages and actions
-
-- **Pages**: `LoginPage`, `AboutUsPage`, `AccountsOverviewPage` (PageBaseClass + FindAppElement); `GoogleHome`, `LinkedIn` (plain POM with ReportResult).
-- **Actions**: `Login`, `AboutUs`, `AccountsOverview` – orchestrate pages and report steps.
+**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
 
 ---
 
-## Project Structure
+## Project layout
 
 ```
 STAF.Selenium.Tests/
 ├── README.md
+├── AGENTS.md                 # AI assistant entry (Cursor, Copilot)
 ├── STAF.Selenium.Tests.sln
-├── .mcp.json                  # MCP config for Visual Studio (selenium-staf; source-controlled)
-├── nuget.config
-├── AGENTS.md                  # AI agent entry (Cursor, Copilot, others)
-├── .cursor/
-│   ├── mcp.json               # Cursor MCP config (selenium-staf)
-│   ├── rules/                 # Always-on + file-scoped STAF rules
-│   └── skills/                # On-demand UI/API/page/context workflows
-├── .github/copilot-instructions.md  # Copilot repo instructions (VS Code / VS)
-├── .vscode/
-│   ├── mcp.json               # VS Code MCP config (selenium-staf)
-│   └── settings.json          # dotnet.unitTests.runSettingsPath → runsettings (default for VS Code)
-├── docs/                      # Architecture docs, user guide (HTML/PDF), PDF build (see README-PDF.md)
-│   ├── STAF-Framework-User-Guide.html
-│   ├── STAF-Framework-Architecture-and-User-Guide.pdf
-│   ├── STAF-Framework-Architecture-and-Technical-Innovation.md
-│   ├── Technical-Architecture.md
-│   ├── Architecture-Diagram.md
-│   ├── Architecture-Summary.md
-│   └── package.json           # Optional: npm run generate-pdf
-├── MCPAgent/                  # MCP server for Selenium + STAF
-│   ├── README.md
-│   ├── publish/               # mcp-sharp-staf-selenium.exe (self-contained)
-│   └── build-mcp-agent.ps1    # Rebuild script
-└── STAFTests/
-    ├── STAF.Selenium.Tests.csproj    # STAF.UI.API 4.4.0, MSTest, RestSharp, etc.
-    ├── appsettings.json              # ConnectionStrings, Email
-    ├── testrunsetting.runsettings     # Browser, URL, parallel, TestRunParameters
-    ├── AssemblyInit.cs                # AssemblyInitialize/Cleanup → HTML summary
-    ├── ResultTemplate.html
-    ├── Actions/                      # Login, AboutUs, AccountsOverview
-    ├── APIData/                      # DTOs for API tests
-    ├── Pages/                        # Page objects (PageBaseClass and plain)
-    ├── Requests/                     # REST client (CreateRequests)
-    ├── TestData/                     # TestDataExcel1.xlsx
-    └── Tests/                        # All test classes
+├── STAFTests/                # Test project (Pages, Actions, Tests, Requests, APIData)
+├── docs/                     # User guide, architecture summary, AI docs
+├── MCPAgent/                 # Optional MCP server for AI + browser tools
+├── .github/                  # Copilot instructions and VS custom agents
+├── .cursor/                  # Cursor rules and skills
+└── .vscode/                  # VS Code settings and MCP config
 ```
 
 ---
 
-## Running Tests
+## Documentation
 
-- **All tests**: `dotnet test` (runsettings file is used by default from the project). Or explicitly: `dotnet test --settings STAFTests\testrunsetting.runsettings`
-- **Filter by class**: `dotnet test --filter "FullyQualifiedName~APITests"`
-- **Filter by method**: `dotnet test --filter "FullyQualifiedName~Sample_ReportResult_Pass_Fail_Warn_Info"`
+| Document | Audience |
+|----------|----------|
+| [docs/README.md](docs/README.md) | Documentation hub |
+| [docs/STAF-Framework-User-Guide.html](docs/STAF-Framework-User-Guide.html) | End-user framework guide (browser / PDF) |
+| [docs/Architecture-Summary.md](docs/Architecture-Summary.md) | One-page architecture and MCP overview |
+| [docs/ai/QUICK_START.md](docs/ai/QUICK_START.md) | AI: add UI, page/action, or API tests |
+| [docs/details/](docs/details/) | Extended / maintainer reference (optional) |
 
-After the run, check **TestResults** (or path in run settings) for **ResultTemplateFinal.html** (assembly summary) and per-test HTML reports.
+---
+
+## AI-assisted development
+
+STAF patterns are enforced via repo instructions so generated code uses `TestBaseClass`, `FindAppElement`, and `ReportResult` — not raw `Thread.Sleep` or ad-hoc WebDriver code.
+
+| Tool | Entry |
+|------|--------|
+| **All agents** | [AGENTS.md](AGENTS.md) |
+| **GitHub Copilot** | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
+| **Visual Studio agents** | [.github/agents/](.github/agents/) — **STAF UI Automation**, **STAF API Automation** |
+| **Cursor** | `.cursor/rules/`, `.cursor/skills/` |
+| **MCP (browser + codegen)** | [MCPAgent/README.md](MCPAgent/README.md) |
+
+Symbol index: `docs/ai/ai-index.json` — refresh with `pwsh tools/UpdateAiIndex.ps1` after adding types.
+
+---
+
+## Running tests
+
+```bash
+# All tests (runsettings from project)
+dotnet test
+
+# Explicit runsettings
+dotnet test --settings STAFTests/testrunsetting.runsettings
+
+# Filter
+dotnet test --filter "ClassName~ParaTests" --settings STAFTests/testrunsetting.runsettings
+```
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**.
+MIT License — Copyright © 2026 Sooraj Ramachandran.
 
-**Copyright © 2026 Sooraj Ramachandran. All rights reserved.**
-
-**Author:** Sooraj Ramachandran
-
-Framework and package: [STAF](https://github.com/sooraj171/STAF) | [STAF.UI.API on NuGet](https://www.nuget.org/packages/STAF.UI.API)
-
-*This software is provided "as is", without warranty of any kind, express or implied. In no event shall the author be liable for any claim, damages or other liability arising from the use of the software.*
+[STAF](https://github.com/sooraj171/STAF) · [STAF.UI.API on NuGet](https://www.nuget.org/packages/STAF.UI.API)

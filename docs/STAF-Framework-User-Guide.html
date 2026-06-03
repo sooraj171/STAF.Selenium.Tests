@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STAF Framework — Architecture, Features &amp; User Guide</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.5; color: #222; max-width: 900px; margin: 0 auto; padding: 24px; }
+    h1 { font-size: 1.75rem; border-bottom: 2px solid #2563eb; padding-bottom: 8px; }
+    h2 { font-size: 1.35rem; margin-top: 28px; color: #1e40af; }
+    h3 { font-size: 1.1rem; margin-top: 20px; }
+    p { margin: 10px 0; }
+    ul, ol { margin: 10px 0; padding-left: 24px; }
+    table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.95rem; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; }
+    .meta { font-size: 0.9rem; color: #64748b; margin-bottom: 20px; }
+    .diagram { margin: 24px 0; text-align: center; }
+    .diagram-title { font-weight: 600; margin-bottom: 12px; font-size: 1rem; }
+    .mermaid { display: flex; justify-content: center; }
+    .links { margin-top: 32px; padding: 16px; background: #f8fafc; border-radius: 8px; }
+    .links a { color: #2563eb; }
+    @media print {
+      body { padding: 16px; }
+      h2 { page-break-after: avoid; }
+      .diagram { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>STAF Framework — Architecture, Features &amp; User Guide</h1>
+  <p class="meta">Document version 4.4.0 · Last updated March 2026</p>
+
+  <h2>1. What Is STAF and How It Helps You</h2>
+  <p><strong>STAF (Simple Test Automation Framework)</strong> is a .NET test automation framework that lets you run UI tests (Selenium), API tests, Excel checks, and accessibility scans in one place, with one reporting model.</p>
+  <ul>
+    <li><strong>One stack:</strong> UI, API, Excel, database, and accessibility in a single framework — no need to glue different tools together.</li>
+    <li><strong>Less boilerplate:</strong> Base classes (TestBaseClass, PageBaseClass) handle driver setup, waits, and cleanup so you focus on test logic.</li>
+    <li><strong>Built-in reporting:</strong> Every test step can be recorded as Pass/Fail/Warn/Info, with per-test HTML reports and an assembly summary so you see results at a glance.</li>
+    <li><strong>Easier adoption:</strong> The sample project includes an optional MCP Agent so you can use AI (e.g., in Cursor or VS Code) to drive the browser and generate STAF-ready code without extra setup.</li>
+  </ul>
+
+  <h2>2. Features at a Glance</h2>
+  <table>
+    <thead><tr><th>Feature</th><th>What you get</th></tr></thead>
+    <tbody>
+      <tr><td>Base classes</td><td>TestBaseClass (UI), TestBaseAPI (API/Excel/DB), PageBaseClass with FindAppElement and built-in waits.</td></tr>
+      <tr><td>Browsers</td><td>Chrome, Edge; local or remote WebDriver; override options if needed.</td></tr>
+      <tr><td>HTML reporting</td><td>Step-by-step Pass/Fail/Warn/Info and a final assembly summary (e.g. ResultTemplateFinal.html).</td></tr>
+      <tr><td>Parallel execution</td><td>Run many tests in parallel with thread-safe reporting.</td></tr>
+      <tr><td>Excel</td><td>Compare workbooks/sheets and read/write cells (ClosedXML).</td></tr>
+      <tr><td>Database</td><td>DbHelper for SQL Server (connection from config, query/scalar/non-query).</td></tr>
+      <tr><td>Accessibility</td><td>Axe-core integration: full-page or scoped scans and HTML reports.</td></tr>
+      <tr><td>Configuration</td><td>appsettings.json and run settings for browser, URL, and test parameters.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Reporting — How Results Are Presented</h2>
+  <p>Reporting is central to STAF so that end users and teams can quickly understand what passed or failed.</p>
+  <ul>
+    <li><strong>Per-test steps:</strong> Each logical step (e.g. “Login button clicked”, “API status check passed”) is recorded with ReportResult or ReportResultAPI. You see a clear trail of actions and outcomes.</li>
+    <li><strong>Per-test HTML file:</strong> Every test gets its own HTML report. On failure, a screenshot can be attached automatically.</li>
+    <li><strong>Assembly summary:</strong> After all tests run, a single summary file (e.g. ResultTemplateFinal.html) aggregates results so you can review the full run at a glance.</li>
+    <li><strong>Assertions and reporting together:</strong> ReportElement extensions (e.g. ReportElementIsDisplayed) both assert and log in one call, so the report stays in sync with your checks without extra code.</li>
+  </ul>
+
+  <h2>4. Technical Architecture</h2>
+  <p>The system is built in clear layers: you and the IDE talk to an optional MCP Agent, which can control a browser or generate STAF code. The test project runs on its own via MSTest and does not depend on the Agent at build or run time.</p>
+
+  <h3>4.1 System Context: User → IDE → MCP Agent → Browser / Framework</h3>
+  <div class="diagram">
+    <div class="diagram-title">Figure 1 — High-level flow</div>
+    <div class="mermaid">
+flowchart TB
+    subgraph User["User / Developer"]
+        Prompt["Natural language prompt\n(e.g. 'Generate STAF login test'\nor 'Open Chrome and go to URL')"]
+    end
+
+    subgraph IDE["AI-Enabled IDE (Cursor / VS Code)"]
+        LLM["AI Model (e.g. Composer)"]
+        MCPClient["MCP Client"]
+    end
+
+    subgraph MCPAgent["MCP Agent (selenium-staf)"]
+        direction TB
+        Runtime["Runtime tools\n(start_browser, navigate,\nclick_element, send_keys,\ntake_screenshot, close_session)"]
+        CodeGen["Code-generation tools\n(GenerateSeleniumStafCode,\nGeneratePageObjectSkeleton,\nGetStafSeleniumFrameworkReference)"]
+    end
+
+    subgraph RuntimeEnv["Runtime Environment"]
+        Browser["Browser\n(Chrome / Edge / Firefox)"]
+    end
+
+    subgraph Framework["STAF.Selenium.Tests Framework"]
+        Tests["Tests/\n(TestBaseClass)"]
+        Pages["Pages/\n(PageBaseClass, FindAppElement)"]
+        Actions["Actions/\n(ReportResult, ReportElement)"]
+        AssemblyInit["AssemblyInit\n(HTML reporting)"]
+    end
+
+    Prompt --> LLM
+    LLM --> MCPClient
+    MCPClient -->|"JSON-RPC over stdio"| MCPAgent
+    MCPAgent -->|"Selenium WebDriver"| Browser
+    MCPAgent -->|"Generated C# files"| Framework
+    LLM -->|"Edits / creates files"| Framework
+    Tests --> Pages
+    Tests --> Actions
+    Pages --> Actions
+    AssemblyInit --> Tests
+    </div>
+  </div>
+
+  <h3>4.2 MCP Agent Internal View (Tools)</h3>
+  <div class="diagram">
+    <div class="diagram-title">Figure 2 — MCP Agent tools</div>
+    <div class="mermaid">
+flowchart LR
+    subgraph MCPAgent["MCP Agent Process"]
+        MCPProtocol["MCP Protocol\n(JSON-RPC stdio)"]
+        Runtime["Runtime Tools"]
+        CodeGen["Code-Gen Tools"]
+    end
+
+    subgraph RuntimeTools["Runtime Tools"]
+        T1["start_browser"]
+        T2["navigate"]
+        T3["click_element"]
+        T4["send_keys"]
+        T5["take_screenshot"]
+        T6["close_session"]
+    end
+
+    subgraph CodeGenTools["Code-Gen Tools"]
+        G1["GenerateSeleniumStafCode"]
+        G2["GeneratePageObjectSkeleton"]
+        G3["GenerateSeleniumSnippet"]
+        G4["GetStafSeleniumFrameworkReference"]
+    end
+
+    MCPProtocol --> Runtime
+    MCPProtocol --> CodeGen
+    Runtime --> RuntimeTools
+    CodeGen --> CodeGenTools
+    RuntimeTools --> Selenium["Selenium WebDriver"]
+    CodeGenTools --> Output["STAF C# code"]
+    </div>
+  </div>
+
+  <h3>4.3 STAF Framework Structure (Test Project)</h3>
+  <div class="diagram">
+    <div class="diagram-title">Figure 3 — Test project and STAF.UI.API</div>
+    <div class="mermaid">
+flowchart TB
+    subgraph STAFTests["STAFTests Project"]
+        AssemblyInit["AssemblyInit\n(AssemblyInitialize/Cleanup)\n→ HTML summary"]
+        TestBase["TestBaseClass / TestBaseAPI"]
+        Tests["Tests/\nParaTests, GoogleSearchTest,\nAPITests, ExcelTests, ..."]
+        Pages["Pages/\nLoginPage, AboutUsPage,\nGoogleHome, ..."]
+        Actions["Actions/\nLogin, AboutUs,\nAccountsOverview"]
+    end
+
+    subgraph STAFUIAPI["STAF.UI.API (NuGet)"]
+        PageBase["PageBaseClass\nFindAppElement"]
+        Report["ReportResult\nReportElement"]
+        Reporting["HTML reporting\nExcelDriver, DbHelper\nAxe accessibility"]
+    end
+
+    AssemblyInit --> Tests
+    TestBase --> Tests
+    Tests --> Pages
+    Tests --> Actions
+    Pages --> PageBase
+    Actions --> Report
+    Tests --> Reporting
+    </div>
+  </div>
+
+  <h2>5. Why STAF Is Different (Novelty)</h2>
+  <ul>
+    <li><strong>One MCP server, two roles:</strong> The same MCP server can control the browser (navigate, click, type, screenshot) and generate STAF code (Pages, Actions, Tests). You can explore in the browser and then get framework-ready code without switching tools.</li>
+    <li><strong>Framework-aware code generation:</strong> Generated code uses PageBaseClass, FindAppElement, ReportResult, TestBaseClass, and the project folder layout — so it fits your reporting and patterns from the start.</li>
+    <li><strong>Out-of-box AI integration:</strong> The sample repo includes MCP config and a self-contained Agent executable. Clone, open in Cursor or VS Code, and use AI-driven browser control and code generation without extra installs.</li>
+    <li><strong>Clear separation:</strong> The MCP Agent is optional and separate from the test project. Tests run with MSTest (e.g. dotnet test or IDE) with or without the Agent.</li>
+    <li><strong>Unified stack:</strong> UI, API, reporting, and accessibility live in one framework and one package (STAF.UI.API), so one set of patterns and one place to look for results.</li>
+  </ul>
+
+  <h2>6. Key Components (Quick Reference)</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>TestBaseClass</td><td>Base for UI tests: driver setup, per-test HTML report, cleanup, assembly summary.</td></tr>
+      <tr><td>TestBaseAPI</td><td>Base for API/Excel/DB tests: same reporting and lifecycle, no browser.</td></tr>
+      <tr><td>PageBaseClass</td><td>FindAppElement with waits; no direct driver use in pages.</td></tr>
+      <tr><td>ReportResult / ReportResultAPI</td><td>Log steps (Pass/Fail/Warn/Info) for UI and API tests.</td></tr>
+      <tr><td>ReportElement</td><td>Assert and report in one call (e.g. ReportElementIsDisplayed).</td></tr>
+      <tr><td>BrowserDriver</td><td>Creates Chrome/Edge driver; override options if needed.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. Getting Started and Links</h2>
+  <p>Use the sample project to run UI, API, Excel, and accessibility examples. Configure run settings (e.g. testrunsetting.runsettings) for browser and URL, then run tests via Test Explorer or <code>dotnet test</code>.</p>
+  <div class="links">
+    <p><strong>STAF framework (GitHub):</strong> <a href="https://github.com/sooraj171/STAF">https://github.com/sooraj171/STAF</a></p>
+    <p><strong>Sample project and MCP Agent (GitHub):</strong> <a href="https://github.com/sooraj171/STAF.Selenium.Tests">https://github.com/sooraj171/STAF.Selenium.Tests</a></p>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+  </script>
+</body>
+</html>
