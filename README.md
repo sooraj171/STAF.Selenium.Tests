@@ -44,6 +44,8 @@ After a run, open **TestResults** for per-test HTML reports and the assembly sum
 
 See [RELEASE_NOTES.md](RELEASE_NOTES.md) for framework and .NET 10 upgrade notes.
 
+**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
+
 ---
 
 ## Project layout
