@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "package": {
+    "id": "STAF.UI.API",
+    "version": "4.4.0"
+  },
+  "entryPoints": {
+    "assemblyInit": "STAFTests/AssemblyInit.cs",
+    "runSettings": "STAFTests/testrunsetting.runsettings",
+    "project": "STAFTests/STAF.Selenium.Tests.csproj"
+  },
+  "goldenExamples": [
+    "docs/ai-instructions.md",
+    "STAFTests/Pages/LoginPage.cs",
+    "STAFTests/Actions/Login.cs",
+    "STAFTests/Tests/ParaTests.cs",
+    "STAFTests/Tests/APITests.cs"
+  ],
+  "symbols": {
+    "GlobalAssemblyInitialize": {
+      "type": "assembly_init",
+      "file": "STAFTests/AssemblyInit.cs",
+      "base": "AssemblyInit",
+      "purpose": "MSTest assembly init/cleanup; parallelize attribute",
+      "keyMethods": ["Setup", "TearDown"],
+      "dependsOn": ["STAF.CF.AssemblyInit"],
+      "usedBy": []
+    },
+    "LoginPage": {
+      "type": "page",
+      "file": "STAFTests/Pages/LoginPage.cs",
+      "base": "PageBaseClass",
+      "purpose": "Parabank login locators",
+      "keyMethods": ["tbUserName", "tbPassword", "btnLogin", "lblError", "lnkAboutUs"],
+      "dependsOn": ["STAF.CF.PageBaseClass"],
+      "usedBy": ["Login", "ReportingSamplesTests"]
+    },
+    "AboutUsPage": {
+      "type": "page",
+      "file": "STAFTests/Pages/AboutUsPage.cs",
+      "base": "PageBaseClass",
+      "purpose": "About Us header/locators",
+      "keyMethods": ["headerTitle"],
+      "dependsOn": ["STAF.CF.PageBaseClass"],
+      "usedBy": ["AboutUs"]
+    },
+    "AccountsOverviewPage": {
+      "type": "page",
+      "file": "STAFTests/Pages/AccountsOverviewPage.cs",
+      "base": "PageBaseClass",
+      "purpose": "Post-login accounts overview locators",
+      "keyMethods": ["headerTitle"],
+      "dependsOn": ["STAF.CF.PageBaseClass"],
+      "usedBy": ["AccountsOverview"]
+    },
+    "Login": {
+      "type": "action",
+      "file": "STAFTests/Actions/Login.cs",
+      "base": "LoginPage",
+      "purpose": "Login flows, invalid login, navigate to About Us",
+      "keyMethods": ["LoginToApplication", "LoginToApplicationInvalid", "VerifyInvalidUserMessageIsDisplayed", "ClickAboutUs", "EnterUserName", "EnterPassword", "ClickLogin"],
+      "dependsOn": ["LoginPage", "STAF.CF.ReportResult"],
+      "usedBy": ["ParaTests"],
+      "returns": ["AccountsOverview", "AboutUs", "Login"]
+    },
+    "AboutUs": {
+      "type": "action",
+      "file": "STAFTests/Actions/AboutUs.cs",
+      "base": "AboutUsPage",
+      "purpose": "About Us verification",
+      "keyMethods": ["VerifyAboutUsPageisLoaded"],
+      "dependsOn": ["AboutUsPage"],
+      "usedBy": ["Login"],
+      "returns": ["AboutUs"]
+    },
+    "AccountsOverview": {
+      "type": "action",
+      "file": "STAFTests/Actions/AccountsOverview.cs",
+      "base": "AccountsOverviewPage",
+      "purpose": "Accounts overview verification after login",
+      "keyMethods": ["VerifyAccountsOverviewPageisLoaded"],
+      "dependsOn": ["AccountsOverviewPage"],
+      "usedBy": ["Login"],
+      "returns": ["AccountsOverview"]
+    },
+    "GoogleHome": {
+      "type": "page_plain",
+      "file": "STAFTests/Pages/GoogleHome.cs",
+      "base": null,
+      "purpose": "Google search fluent sample; not PageBaseClass — prefer PageBaseClass for new pages",
+      "keyMethods": ["verifyGoogleHomePageIsDispalyed", "enterSearchTerm", "selectFirstItemFromResult"],
+      "dependsOn": ["STAF.CF"],
+      "usedBy": ["GoogleSearchTest"],
+      "returns": ["LinkedInHome"]
+    },
+    "LinkedInHome": {
+      "type": "page_plain",
+      "file": "STAFTests/Pages/LinkedIn.cs",
+      "base": null,
+      "purpose": "LinkedIn verification in Google search chain",
+      "keyMethods": ["verifyLinkedInHomePageIsDispalyed"],
+      "dependsOn": ["STAF.CF"],
+      "usedBy": ["GoogleHome"]
+    },
+    "ExcelClass": {
+      "type": "utility",
+      "file": "STAFTests/Pages/ExcelClass.cs",
+      "base": null,
+      "purpose": "ClosedXML file comparison helpers (not STAF ExcelDriver)",
+      "keyMethods": ["CompareFiles"],
+      "dependsOn": [],
+      "usedBy": []
+    },
+    "CreateRequests": {
+      "type": "request",
+      "file": "STAFTests/Requests/CreateRequests.cs",
+      "base": null,
+      "purpose": "REST calls (reqres.in, dummyjson)",
+      "keyMethods": ["GetUsers", "GetUsersFromDummyJson"],
+      "dependsOn": ["RestSharp"],
+      "usedBy": ["APITests"]
+    },
+    "ListOfUsersDTO": {
+      "type": "dto",
+      "file": "STAFTests/APIData/ListOfUsersDTO.cs",
+      "base": null,
+      "purpose": "reqres users list response shape",
+      "keyMethods": [],
+      "dependsOn": [],
+      "usedBy": ["CreateRequests", "APITests"]
+    },
+    "DummyJsonUsersResponse": {
+      "type": "dto",
+      "file": "STAFTests/APIData/DummyJsonUsersDTO.cs",
+      "base": null,
+      "purpose": "DummyJSON users response shape",
+      "keyMethods": [],
+      "dependsOn": [],
+      "usedBy": ["CreateRequests", "APITests"]
+    },
+    "ParaTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/ParaTests.cs",
+      "base": "TestBaseClass",
+      "purpose": "Parabank UI + Axe sample",
+      "keyMethods": ["LoginToApp", "LoginToAppWithInvalidId", "NavigateToAboutUs"],
+      "dependsOn": ["Login", "STAF.CF.TestBaseClass"],
+      "usedBy": []
+    },
+    "GoogleSearchTest": {
+      "type": "test",
+      "file": "STAFTests/Tests/GoogleSearchTest.cs",
+      "base": "TestBaseClass",
+      "purpose": "Google → results → LinkedIn fluent chain",
+      "keyMethods": ["VerifyGoogleSearch", "VerifyAmelyaSearch"],
+      "dependsOn": ["GoogleHome", "STAF.CF.TestBaseClass"],
+      "usedBy": []
+    },
+    "ReportingSamplesTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/ReportingSamplesTests.cs",
+      "base": "TestBaseClass",
+      "purpose": "ReportResult + ReportElement samples",
+      "keyMethods": ["Sample_ReportResult_Pass_Fail_Warn_Info", "Sample_ReportElement_Exists_IsDisplayed_IsEnabled"],
+      "dependsOn": ["LoginPage", "STAF.CF.TestBaseClass"],
+      "usedBy": []
+    },
+    "WebDriverExtensionsSamplesTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/WebDriverExtensionsSamplesTests.cs",
+      "base": "TestBaseClass",
+      "purpose": "WaitForDocumentReady and related extensions",
+      "keyMethods": [],
+      "dependsOn": ["STAF.CF.TestBaseClass"],
+      "usedBy": []
+    },
+    "BrowserOverrideSamplesTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/WebDriverExtensionsSamplesTests.cs",
+      "base": "TestBaseClass",
+      "purpose": "Browser override samples (same file as WebDriverExtensionsSamplesTests)",
+      "keyMethods": [],
+      "dependsOn": ["STAF.CF.TestBaseClass"],
+      "usedBy": []
+    },
+    "APITests": {
+      "type": "test",
+      "file": "STAFTests/Tests/APITests.cs",
+      "base": "TestBaseAPI",
+      "purpose": "REST + ReportResultAPI",
+      "keyMethods": ["verifyUserDetails", "Sample_ReportResultAPI_Pass_Warn_Info"],
+      "dependsOn": ["CreateRequests", "STAF.CF.TestBaseAPI"],
+      "usedBy": []
+    },
+    "ExcelTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/ExcelTests.cs",
+      "base": "TestBaseAPI",
+      "purpose": "ExcelDriver samples; temp copies for parallel safety",
+      "keyMethods": ["CompareExcel"],
+      "dependsOn": ["STAF.CF.Excel.ExcelDriver", "STAF.CF.TestBaseAPI"],
+      "usedBy": []
+    },
+    "DatabaseSamplesTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/DatabaseSamplesTests.cs",
+      "base": "TestBaseAPI",
+      "purpose": "DbHelper samples",
+      "keyMethods": [],
+      "dependsOn": ["STAF.CF.TestBaseAPI"],
+      "usedBy": []
+    },
+    "ProgrammaticReportSamplesTests": {
+      "type": "test",
+      "file": "STAFTests/Tests/ProgrammaticReportSamplesTests.cs",
+      "base": "TestBaseAPI",
+      "purpose": "Programmatic HTML report generation samples",
+      "keyMethods": [],
+      "dependsOn": ["STAF.CF.TestBaseAPI"],
+      "usedBy": []
+    }
+  }
+}

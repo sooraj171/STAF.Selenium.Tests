@@ -71,17 +71,21 @@ Layered instructions keep **token use low** while enforcing STAF patterns (`Test
 
 | Layer | Path | When it loads |
 |-------|------|----------------|
+| **Start here** | [START_HERE.md](START_HERE.md) · [INDEX.md](INDEX.md) | Cross-platform AI setup overview |
 | **Agent entry (all tools)** | [AGENTS.md](AGENTS.md) | Reference for any AI agent; golden files + token discipline |
+| **Master guide** | [docs/AI_GUIDE.md](docs/AI_GUIDE.md) · [docs/QUICK_START.md](docs/QUICK_START.md) | Full workflows and task-based entry |
 | **Always-on** | [.cursor/rules/staf-selenium-framework.mdc](.cursor/rules/staf-selenium-framework.mdc) (Cursor) · [.github/copilot-instructions.md](.github/copilot-instructions.md) (Copilot) | Every chat in this repo |
 | **File-scoped (Cursor)** | `.cursor/rules/staf-pages.mdc`, `staf-actions.mdc`, `staf-tests.mdc` | When editing matching `STAFTests/**` files |
-| **Skills (Cursor)** | [.cursor/skills/](.cursor/skills/) | On-demand workflows: UI test, API test, page/action, context loading |
+| **Skills (Cursor)** | [.cursor/skills/MASTER.md](.cursor/skills/MASTER.md) | On-demand workflows: UI test, API test, page/action, context loading |
+| **VS custom agents** | [.github/agents/](.github/agents/) | Visual Studio Copilot: **STAF UI Automation** / **STAF API Automation** |
 | **Deep context** | [docs/ai-instructions.md](docs/ai-instructions.md) · [docs/ai-index.json](docs/ai-index.json) | Attach with `@` only when generating new types |
 | **Setup & prompts** | [docs/ai-setup.md](docs/ai-setup.md) · [docs/ai-prompts.md](docs/ai-prompts.md) | Onboarding and copy-paste prompts |
 
 | Tool | Primary file | How it is applied |
 |------|--------------|-------------------|
-| **Cursor** | `.cursor/rules/*.mdc` + `.cursor/skills/staf-*` | Rules auto-apply; skills discovered from `description` or invoked by name |
-| **GitHub Copilot** (VS Code / Visual Studio) | `.github/copilot-instructions.md` | Repo instructions when workspace root is this repository |
+| **Cursor** | `.cursor/rules/*.mdc` + `.cursor/skills/staf-*` + [.cursor/cursor.rules](.cursor/cursor.rules) | Rules auto-apply; skills discovered from `description` or invoked by name |
+| **GitHub Copilot** (VS Code) | `.github/copilot-instructions.md` · [.vscode/README.md](.vscode/README.md) | Repo instructions when workspace root is this repository |
+| **GitHub Copilot** (Visual Studio) | `.github/copilot-instructions.md` + `.github/agents/*.agent.md` | Repo instructions + specialized UI/API agents in agent picker |
 
 ### Skills quick chat sheet
 

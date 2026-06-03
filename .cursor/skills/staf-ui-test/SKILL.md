@@ -6,27 +6,62 @@ description: >-
   tests away from raw WebDriver.
 ---
 
-# STAF UI test
+# STAF UI Test
 
-## Workflow
+## Quick Workflow
 
-1. Check `docs/ai-index.json` for existing Page/Action.
-2. If missing → use skill **staf-page-action** (or create Page then Action first).
-3. Add `[TestMethod]` in `STAFTests/Tests/` : `TestBaseClass`.
-4. Arrange: `NavigateTo(TestContext.Properties["purl"|"url"].ToString())` (or action that navigates).
-5. Act/Assert: chain Action methods only; no `By.*` in test.
-6. Run: `dotnet test --filter "FullyQualifiedName~YourMethod" --settings STAFTests/testrunsetting.runsettings`
+1. **Check** `docs/ai-index.json` for existing Page/Action
+2. **If missing** → use skill **staf-page-action** first (create Page → Action)
+3. **Add `[TestMethod]`** in `STAFTests/Tests/{Feature}Tests.cs` inheriting `TestBaseClass`
+4. **Arrange:** `NavigateTo(TestContext.Properties["purl"].ToString())` or action that navigates
+5. **Act/Assert:** Chain action methods only; no `By.*` selectors in test
+6. **Test:** `dotnet test --filter "FullyQualifiedName~YourNamespace.ClassName.MethodName" --settings STAFTests/testrunsetting.runsettings`
+
+## Template
+
+```csharp
+[TestMethod]
+public void LoginToApp_ValidCredentials_Success()
+{
+    // Arrange
+    NavigateTo(TestContext.Properties["purl"].ToString());
+
+    // Act & Assert (actions handle assertions via ReportResult)
+    new Login(driver, TestContext)
+        .LoginToApplication(
+            TestContext.Properties["userName"].ToString(),
+            TestContext.Properties["password"].ToString())
+        .VerifyAccountsOverviewPageisLoaded();
+}
+```
 
 ## Checklist
 
-- [ ] Inherits `TestBaseClass`
-- [ ] Uses `driver` from base — never constructed in test
-- [ ] No `Thread.Sleep`
-- [ ] No duplicate methods on existing Actions
-- [ ] Optional Axe: see `ParaTests.LoginToApp` pattern
+- [ ] Inherits `TestBaseClass` (not custom base, not `TestBaseAPI`)
+- [ ] Uses `driver` from base — **never constructed** in test
+- [ ] No `Thread.Sleep` — use `FindAppElement` (auto-waits)
+- [ ] **No raw `By.*` selectors** — reference page properties only
+- [ ] Assertions delegated to action methods (via `ReportResult`)
+- [ ] Test is thin — primarily calls action methods
+- [ ] Test method name: `{Action}_{Scenario}_{Expected}` (e.g., `LoginToApp_ValidCredentials_Success`)
+- [ ] No duplicate method names on actions
 
-## Golden file
+## Platforms
 
-Open **one**: `STAFTests/Tests/ParaTests.cs` + `STAFTests/Actions/Login.cs`
+| Platform | How to Use | Setup |
+|----------|-----------|-------|
+| **Visual Studio** | GitHub Copilot chat | See `.github/copilot-instructions.md` |
+| **VS Code** | Copilot Chat (`Ctrl+Shift+I`) | See `.vscode/README.md` |
+| **Cursor** | Composer or Cmd+K | Reference this skill by name |
 
-Templates: [reference.md](reference.md)
+## Golden Files
+
+- **Test:** `STAFTests/Tests/ParaTests.cs` — Parabank login flows
+- **Action:** `STAFTests/Actions/Login.cs` — Valid/invalid login, fluent returns
+- **Page:** `STAFTests/Pages/LoginPage.cs` — Element locators
+
+## Full Guide
+
+📖 **Master documentation:** [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md#workflow-1-ui-test)
+
+Templates & examples: [reference.md](reference.md)

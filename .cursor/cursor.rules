@@ -1,0 +1,349 @@
+# Cursor Rules — STAF.Selenium.Tests
+
+Global rules for consistent STAF code generation across the project.
+
+---
+
+## Framework Rules
+
+### Base Classes & Inheritance
+
+- **UI Tests** must inherit `TestBaseClass` (not custom classes, not TestBase)
+- **API Tests** must inherit `TestBaseAPI`
+- **Page Objects** must inherit `PageBaseClass`
+- **Actions** must inherit their corresponding `*Page` class
+
+### WebDriver & Initialization
+
+- ❌ **NEVER** create new `IWebDriver` in tests or pages: `new ChromeDriver()`, `new EdgeDriver()`
+- ✅ Use inherited `driver` property from `TestBaseClass` or `PageBaseClass`
+- ❌ **NEVER** use `Thread.Sleep(...)`
+- ✅ Use `FindAppElement` (auto-waits 10 seconds) or `WaitForDocumentReady()`
+
+### Locator Strategy
+
+All element locators must:
+
+1. Be defined as **private string** in `#region ObjectIdentifierValues`
+2. Be used via **properties returning `IWebElement`**
+3. Use `FindAppElement(By.*, selector, "description")`
+4. Prefer strategy order: `id` > `name` > `css` > `xpath`
+5. Include descriptions for every finder
+
+**Example:**
+```csharp
+#region ObjectIdentifierValues
+private string _tbUserName = "username";
+#endregion
+
+public IWebElement tbUserName => FindAppElement(By.Name(_tbUserName), "Username field");
+```
+
+### Test Structure (AAA Pattern)
+
+All tests must follow **Arrange → Act → Assert**:
+
+```csharp
+// Arrange: Setup (navigate, prepare data)
+NavigateTo(TestContext.Properties["purl"].ToString());
+
+// Act & Assert: Call action methods that return fluent chains
+new Login(driver, TestContext)
+	.LoginToApplication(user, pwd)
+	.VerifyAccountsOverviewPageisLoaded();
+```
+
+- ❌ Tests must NOT contain `By.*` selectors
+- ❌ Tests must NOT contain element interactions (Click, SendKeys)
+- ✅ Tests must call Action methods only
+
+### Action Methods & Reporting
+
+Every action method must:
+
+1. **Have a purpose** — either user action or verification
+2. **Return fluent chain** — return `this` (stay on page) or `new NextPage(driver, context)` (navigate)
+3. **Report every step** — use `ReportResult` (UI) or `ReportResultAPI` (API)
+4. **Use `nameof()`** for method names in reports
+5. **Have XML comments** — `/// <summary>` on public methods
+
+**UI Pattern (ReportResult):**
+```csharp
+public MyPage ClickSubmit()
+{
+	var testName = nameof(ClickSubmit);
+	try
+	{
+		Click(btnSubmit);
+		ReportResult.ReportResultPass(Driver, context, testName, "Clicked submit button");
+	}
+	catch (Exception ex)
+	{
+		ReportResult.ReportResultFail(Driver, context, testName, $"Failed: {ex.Message}");
+		Assert.Fail($"Failed: {ex.Message}");
+	}
+	return this;
+}
+```
+
+**Verification Pattern:**
+```csharp
+public MyPage VerifyPageLoaded()
+{
+	btnSubmit.ReportElementIsDisplayed(Driver, context, nameof(VerifyPageLoaded), "Submit button", false);
+	return this;
+}
+```
+
+**API Pattern (ReportResultAPI):**
+```csharp
+[TestMethod]
+public async Task GetUsers_Page1_Success()
+{
+	var testName = nameof(GetUsers_Page1_Success);
+	var response = await new CreateRequests().GetUsers(page: 1);
+
+	if (response.StatusCode != HttpStatusCode.OK)
+	{
+		ReportResultAPI.ReportResultFail(TestContext, testName, $"Expected 200, got {response.StatusCode}");
+		Assert.Fail();
+	}
+
+	Assert.IsNotNull(response.Data);
+	ReportResultAPI.ReportResultPass(TestContext, testName, "Users retrieved successfully");
+}
+```
+
+---
+
+## File Naming & Organization
+
+### File = Class Name
+
+Always match file name to class name (case-sensitive):
+
+| File | Class | Inherits | Folder |
+|------|-------|----------|--------|
+| `LoginPage.cs` | `LoginPage` | `PageBaseClass` | `STAFTests/Pages/` |
+| `Login.cs` | `Login` | `LoginPage` | `STAFTests/Actions/` |
+| `ParaTests.cs` | `ParaTests` | `TestBaseClass` | `STAFTests/Tests/` |
+| `CreateRequests.cs` | `CreateRequests` | *(plain class)* | `STAFTests/Requests/` |
+| `UsersDTO.cs` | `UsersDTO` | *(plain class)* | `STAFTests/APIData/` |
+
+### Folder Organization
+
+```
+STAFTests/
+├── Pages/        → *Page.cs files only (PageBaseClass)
+├── Actions/      → *.cs action files (inherit *Page)
+├── Tests/        → *Tests.cs test files (TestBaseClass or TestBaseAPI)
+├── Requests/     → *Requests.cs API request classes
+└── APIData/      → *DTO.cs response shape classes
+```
+
+### Workflow: Creation Order
+
+**New Screen:**
+1. Create `STAFTests/Pages/{Screen}Page.cs`
+2. Create `STAFTests/Actions/{Screen}.cs`
+3. Add tests in `STAFTests/Tests/{Feature}Tests.cs`
+4. Update `docs/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
+
+**New API Test:**
+1. Add method to `STAFTests/Requests/CreateRequests.cs` (or create new `*Requests.cs`)
+2. Create `STAFTests/APIData/{ResponseShape}DTO.cs`
+3. Add test to `STAFTests/Tests/APITests.cs`
+4. Update `docs/ai-index.json`
+
+---
+
+## Naming Conventions
+
+### Classes
+
+- **Pages:** `{ScreenName}Page` — e.g., `LoginPage`, `AccountsOverviewPage`, `AboutUsPage`
+- **Actions:** `{ScreenName}` — e.g., `Login`, `AccountsOverview`, `AboutUs`
+- **Tests:** `{Feature}Tests` — e.g., `ParaTests`, `GoogleSearchTests`, `APITests`
+- **Requests:** `CreateRequests` or `{Service}Requests` — e.g., `CreateRequests`, `ReqResRequests`
+- **DTOs:** `{Response}{Shape}DTO` — e.g., `UsersListDTO`, `UserDTO`, `DummyJsonUsersDTO`
+
+### Methods
+
+- **Test methods:** `{Action}__{Scenario}__{Expected}` — e.g., `LoginToApp_ValidCredentials_Success`, `GetUsers_Page1_ReturnsSuccess`
+- **Verification:** `Verify{Thing}{State}` — e.g., `VerifyPageLoaded()`, `VerifyErrorMessageDisplayed()`
+- **Navigation:** `Click{Button}` or `Navigate{Screen}` — e.g., `ClickLogout()`, `ClickSubmit()`
+- **Data entry:** `Enter{Field}` — e.g., `EnterUserName()`, `EnterPassword()`
+- **Action flow:** `{Verb}{Noun}` — e.g., `LoginToApplication()`, `SubmitForm()`
+
+### Properties (Pages)
+
+- **Text input:** `tb{FieldName}` — e.g., `tbUserName`, `tbPassword`
+- **Button:** `btn{Name}` — e.g., `btnSubmit`, `btnLogin`
+- **Link:** `lnk{Name}` — e.g., `lnkLogout`, `lnkNext`
+- **Label/Text:** `lbl{Name}` — e.g., `lblError`, `lblMessage`
+- **Container/Div:** `div{Name}` — e.g., `divHeader`, `divContent`
+- **List/Table:** `lst{Name}` or `tbl{Name}` — e.g., `lstAccounts`, `tblUsers`
+
+---
+
+## Code Quality Rules
+
+### Documentation
+
+- All **public methods** must have XML comments: `/// <summary> ... </summary>`
+- All **page properties** should have brief descriptions
+- Include **parameter descriptions** for methods with parameters
+
+**Example:**
+```csharp
+/// <summary>
+/// Logs in to the application with provided credentials
+/// </summary>
+/// <param name="userName">Username for login</param>
+/// <param name="password">Password for login</param>
+/// <returns>AccountsOverview page object after successful login</returns>
+public AccountsOverview LoginToApplication(string userName, string password)
+{
+	// implementation
+}
+```
+
+### Exception Handling
+
+- Always **try/catch** around element interactions in actions
+- **Log failures** with `ReportResult.ReportResultFail(...)` before `Assert.Fail(...)`
+- **Include exception message** in failure report: `$"Error: {ex.Message}"`
+
+### Namespaces
+
+- All code must be in `namespace STAFTests { }`
+- No custom namespaces unless organization-wide pattern
+- Include proper `using` statements:
+  - `using Microsoft.VisualStudio.TestTools.UnitTesting;` (for TestMethod)
+  - `using OpenQA.Selenium;` (for By, IWebElement)
+  - `using STAF;` (for TestBaseClass, ReportResult)
+  - `using STAF.CF;` (for PageBaseClass)
+
+---
+
+## Testing Rules
+
+### Test Execution
+
+- **Always use** `testrunsetting.runsettings` when running tests
+- **Test filter format:** `FullyQualifiedName~STAFTests.{ClassName}.{MethodName}`
+- **Build before test:** `dotnet build STAFTests/STAF.Selenium.Tests.csproj`
+
+### Assertions
+
+- **UI Tests:** Assertions via `ReportElement*` methods in actions
+- **API Tests:** Assertions via MSTest `Assert.*` + `ReportResultAPI` reporting
+- **Minimal assertions in test method** — most logic in actions
+- **Status code first** — check HTTP status before parsing response body
+
+---
+
+## Git & Version Control
+
+### Commit Guidelines
+
+- **Create Page+Action together** — commit both in same change
+- **Update `docs/ai-index.json`** when adding new page/action/request/DTO
+- **Run tests before committing** — ensure no regressions
+- **Use meaningful messages:** "Add LoginPage + Login action flow" (not "update")
+
+### Before Pushing
+
+```powershell
+# Build
+dotnet build STAFTests/STAF.Selenium.Tests.csproj
+
+# Run tests
+dotnet test --settings STAFTests/testrunsetting.runsettings
+
+# Update symbol index
+pwsh tools/UpdateAiIndex.ps1
+```
+
+---
+
+## Code Generation (Cursor AI)
+
+### When Asking Cursor to Generate Code
+
+**Reference specific files:**
+> "Use the pattern from @STAFTests/Pages/LoginPage.cs"
+> "Follow the structure in @STAFTests/Actions/Login.cs"
+
+**Specify constraints:**
+> "Don't use Thread.Sleep; use FindAppElement instead"
+> "Every step must call ReportResult or ReportElement*"
+> "No raw driver.FindElement — use page properties only"
+
+**Ask for checklist:**
+> "Before finishing, verify the code meets the checklist in docs/AI_GUIDE.md"
+
+**Reference golden examples:**
+> "Pattern from LoginPage.cs, Login.cs, and ParaTests.cs"
+
+---
+
+## Conflict Resolution
+
+If code generation violates these rules, **Cursor should:**
+
+1. **Point out the rule** being violated
+2. **Show the correct pattern** from golden files
+3. **Ask for confirmation** before proceeding with non-standard code
+4. **Reference documentation** — `docs/AI_GUIDE.md` or `.cursor/skills/MASTER.md`
+
+**Example dialog:**
+> "This code uses `Thread.Sleep()`, which violates the STAF rules. Use `FindAppElement()` instead, which auto-waits. Let me fix this — [corrected code]"
+
+---
+
+## Resource Files
+
+| File | Purpose |
+|------|---------|
+| `docs/AI_GUIDE.md` | Master guide; comprehensive patterns & workflows |
+| `.cursor/skills/MASTER.md` | Skill index; quick navigation |
+| `.cursor/skills/staf-ui-test/SKILL.md` | UI test skill |
+| `.cursor/skills/staf-page-action/SKILL.md` | Page + action skill |
+| `.cursor/skills/staf-api-test/SKILL.md` | API test skill |
+| `.github/copilot-instructions.md` | Visual Studio GitHub Copilot rules |
+| `.vscode/README.md` | VS Code Copilot setup |
+| `docs/ai-index.json` | Symbol index (generated) |
+
+---
+
+## Quick Checklist for Code Generation
+
+### Before Creating New Code
+
+- [ ] Identify workflow: UI Test, Page+Action, or API Test
+- [ ] Check golden files for pattern
+- [ ] Reference `docs/ai-index.json` for existing similar code
+- [ ] Plan file locations and class names
+
+### During Generation (Cursor Tips)
+
+- [ ] Reference specific file patterns: `@STAFTests/Actions/Login.cs`
+- [ ] Ask Cursor to verify against rules in this file
+- [ ] Specify constraints explicitly (no Thread.Sleep, etc.)
+- [ ] Request XML comments on public methods
+
+### After Generation
+
+- [ ] Build: `dotnet build STAFTests/STAF.Selenium.Tests.csproj`
+- [ ] Run tests: `dotnet test --filter "ClassName~YourClass"`
+- [ ] Update `docs/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
+- [ ] Verify all public methods have XML comments
+- [ ] Check inheritance (PageBaseClass, TestBaseClass, etc.)
+
+---
+
+**Last Updated:** 2026-05-31  
+**Framework Version:** STAF.UI.API v4.4.0+  
+**Target Framework:** .NET 10  
+**Applies To:** Cursor AI Editor
