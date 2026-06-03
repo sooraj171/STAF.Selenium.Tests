@@ -1,6 +1,6 @@
 # GitHub Copilot — STAF.Selenium.Tests
 
-**Master reference:** [docs/AI_GUIDE.md](../docs/AI_GUIDE.md) — Single source of truth for all platforms (Visual Studio, VS Code, Cursor).
+**Master reference:** [docs/ai/AI_GUIDE.md](../docs/ai/AI_GUIDE.md) — Single source of truth for all platforms (Visual Studio, VS Code, Cursor).
 
 ---
 
@@ -8,9 +8,9 @@
 
 | Tool | Where Instructions Load | What to Read |
 |------|---|---|
-| **Visual Studio** | `.github/copilot-instructions.md` (this file) | **Quick Rules** below + [Full Guide](../docs/AI_GUIDE.md) |
-| **VS Code** | `.vscode/README.md` + `.github/copilot-instructions.md` | [Quick Rules](#quick-rules) + [Full Guide](../docs/AI_GUIDE.md) |
-| **Cursor** | `.cursor/skills/` + `.cursor/cursor.rules` | [MASTER.md](.cursor/skills/MASTER.md) + [Full Guide](../docs/AI_GUIDE.md) |
+| **Visual Studio** | `.github/copilot-instructions.md` (this file) | **Quick Rules** below + [Full Guide](../docs/ai/AI_GUIDE.md) |
+| **VS Code** | `.vscode/README.md` + `.github/copilot-instructions.md` | [Quick Rules](#quick-rules) + [Full Guide](../docs/ai/AI_GUIDE.md) |
+| **Cursor** | `.cursor/skills/` + `.cursor/cursor.rules` | [MASTER.md](.cursor/skills/MASTER.md) + [Full Guide](../docs/ai/AI_GUIDE.md) |
 
 ---
 
@@ -68,7 +68,7 @@ public void LoginToApp_ValidCredentials_Success()
 ```
 
 **Golden file:** `STAFTests/Tests/ParaTests.cs`  
-**Full details:** [Workflow 1: UI Test](../docs/AI_GUIDE.md#workflow-1-ui-test)
+**Full details:** [Workflow 1: UI Test](../docs/ai/AI_GUIDE.md#workflow-1-ui-test)
 
 ---
 
@@ -80,7 +80,7 @@ public void LoginToApp_ValidCredentials_Success()
 **Order:**
 1. Create `*Page.cs` in `STAFTests/Pages/`
 2. Create `*.cs` (inherits `*Page`) in `STAFTests/Actions/`
-3. Update `docs/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
+3. Update `docs/ai/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
 
 **Page template:**
 
@@ -126,7 +126,7 @@ public NextScreen ClickSubmit()
 ```
 
 **Golden files:** `STAFTests/Pages/LoginPage.cs` + `STAFTests/Actions/Login.cs`  
-**Full details:** [Workflow 2: Page + Action](../docs/AI_GUIDE.md#workflow-2-page--action)
+**Full details:** [Workflow 2: Page + Action](../docs/ai/AI_GUIDE.md#workflow-2-page--action)
 
 ---
 
@@ -186,7 +186,7 @@ public async Task GetUsers_Page1_ReturnsUsersSuccessfully()
 ```
 
 **Golden files:** `STAFTests/Requests/CreateRequests.cs` + `STAFTests/APIData/*.cs` + `STAFTests/Tests/APITests.cs`  
-**Full details:** [Workflow 3: API Test](../docs/AI_GUIDE.md#workflow-3-api-test)
+**Full details:** [Workflow 3: API Test](../docs/ai/AI_GUIDE.md#workflow-3-api-test)
 
 ---
 
@@ -210,13 +210,13 @@ dotnet test --settings STAFTests/testrunsetting.runsettings
 
 | Need | Open | Notes |
 |------|------|-------|
-| **Full patterns & workflows** | [docs/AI_GUIDE.md](../docs/AI_GUIDE.md) | Single source of truth; covers all 3 workflows with templates |
-| **Quick start (new users)** | [docs/QUICK_START.md](../docs/QUICK_START.md) | Platform-specific navigation |
-| **Symbol reference** | `docs/ai-index.json` | Generated; run `pwsh tools/UpdateAiIndex.ps1` to update |
+| **Full patterns & workflows** | [docs/ai/AI_GUIDE.md](../docs/ai/AI_GUIDE.md) | Single source of truth; covers all 3 workflows with templates |
+| **Quick start (new users)** | [docs/ai/QUICK_START.md](../docs/ai/QUICK_START.md) | Platform-specific navigation |
+| **Symbol reference** | `docs/ai/ai-index.json` | Generated; run `pwsh tools/UpdateAiIndex.ps1` to update |
 | **Cursor skills** | [.cursor/skills/MASTER.md](.cursor/skills/MASTER.md) | Cursor-specific skill index (VS Code, Cursor) |
 | **VS Code setup** | [.vscode/README.md](.vscode/README.md) | VS Code GitHub Copilot configuration |
 | **VS custom agents** | [agents/](agents/) | STAF UI & API specialized Copilot agents |
-| **Golden examples** | See [File Structure](../docs/AI_GUIDE.md#file-structure) | `LoginPage.cs`, `Login.cs`, `ParaTests.cs`, `CreateRequests.cs`, `APITests.cs` |
+| **Golden examples** | See [File Structure](../docs/ai/AI_GUIDE.md#file-structure) | `LoginPage.cs`, `Login.cs`, `ParaTests.cs`, `CreateRequests.cs`, `APITests.cs` |
 
 ---
 
@@ -228,7 +228,7 @@ dotnet test --settings STAFTests/testrunsetting.runsettings
 - **Custom agents** (VS 2026 18.4+): `.github/agents/staf-ui-automation.agent.md` (UI) and `staf-api-automation.agent.md` (API) — pick from the agent picker or `@staf-ui-automation` / `@staf-api-automation`
 - Ask Copilot: *"Create a Page Object for..."* or *"Generate a UI test using..."*
 - Reference patterns: *"Use the pattern from LoginPage.cs and Login.cs"*
-- Refer to [docs/AI_GUIDE.md](../docs/AI_GUIDE.md) for deep dives
+- Refer to [docs/ai/AI_GUIDE.md](../docs/ai/AI_GUIDE.md) for deep dives
 
 ### VS Code (GitHub Copilot)
 
@@ -248,9 +248,9 @@ dotnet test --settings STAFTests/testrunsetting.runsettings
 
 ### Before Creating New Code
 
-- [ ] Check `docs/ai-index.json` — reuse existing pages/actions/requests
+- [ ] Check `docs/ai/ai-index.json` — reuse existing pages/actions/requests
 - [ ] Identify workflow: UI Test, Page+Action, or API Test
-- [ ] Reference golden file(s) from [docs/AI_GUIDE.md](../docs/AI_GUIDE.md#workflow-1-ui-test)
+- [ ] Reference golden file(s) from [docs/ai/AI_GUIDE.md](../docs/ai/AI_GUIDE.md#workflow-1-ui-test)
 - [ ] Follow file naming (name = class name)
 - [ ] Add step reporting (`ReportResult` / `ReportElement*` / `ReportResultAPI`)
 - [ ] No `Thread.Sleep`, no raw `driver.FindElement`, no hardcoded WebDriver creation
@@ -260,7 +260,7 @@ dotnet test --settings STAFTests/testrunsetting.runsettings
 - [ ] Inherits correct base class (`TestBaseClass`, `PageBaseClass`, `TestBaseAPI`)
 - [ ] All public methods have XML comments
 - [ ] Test passes locally: `dotnet test --filter "FullyQualifiedName~YourTest" --settings STAFTests/testrunsetting.runsettings`
-- [ ] Update `docs/ai-index.json` (if new page/action/request)
+- [ ] Update `docs/ai/ai-index.json` (if new page/action/request)
 - [ ] No build errors: `dotnet build STAFTests/STAF.Selenium.Tests.csproj`
 
 ---

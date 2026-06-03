@@ -3,8 +3,9 @@ const fs = require('fs');
 
 async function generatePdf() {
   const puppeteer = require('puppeteer');
-  const htmlPath = path.resolve(__dirname, 'STAF-Framework-User-Guide.html');
-  const pdfPath = path.resolve(__dirname, 'STAF-Framework-Architecture-and-User-Guide.pdf');
+  const docsDir = path.resolve(__dirname, '../..');
+  const htmlPath = path.join(docsDir, 'STAF-Framework-User-Guide.html');
+  const pdfPath = path.join(docsDir, 'STAF-Framework-Architecture-and-User-Guide.pdf');
 
   if (!fs.existsSync(htmlPath)) {
     console.error('HTML file not found:', htmlPath);

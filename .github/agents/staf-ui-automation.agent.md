@@ -28,7 +28,7 @@ Do **not** use `TestBaseAPI`, RestSharp, or API DTOs unless the user explicitly 
 
 ### Add a UI test method
 
-1. Check `docs/ai-index.json` for existing Page/Action.
+1. Check `docs/ai/ai-index.json` for existing Page/Action.
 2. If missing, create Page then Action first (see below).
 3. Add `[TestMethod]` in a class inheriting `TestBaseClass`.
 4. Arrange: `NavigateTo(TestContext.Properties["purl"].ToString())` (or equivalent).
@@ -53,9 +53,9 @@ Do **not** use `TestBaseAPI`, RestSharp, or API DTOs unless the user explicitly 
 
 | Need | File |
 |------|------|
-| Full UI patterns | `docs/AI_GUIDE.md` — Workflow 1 & 2 |
-| Quick task entry | `docs/QUICK_START.md` |
-| Symbol lookup | `docs/ai-index.json` |
+| Full UI patterns | `docs/ai/AI_GUIDE.md` — Workflow 1 & 2 |
+| Quick task entry | `docs/ai/QUICK_START.md` |
+| Symbol lookup | `docs/ai/ai-index.json` |
 | Repo rules (Copilot) | `.github/copilot-instructions.md` |
 
 ## Before finishing

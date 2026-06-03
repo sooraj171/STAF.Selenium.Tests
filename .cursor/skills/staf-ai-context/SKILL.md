@@ -17,9 +17,9 @@ description: >-
 
 | Task | Attach (`@`) |
 |------|----------------|
-| Locate symbol / file | `docs/ai-index.json` only |
+| Locate symbol / file | `docs/ai/ai-index.json` only |
 | New page/action/test | `ai-index.json` + **one** golden `.cs` from index `goldenExamples` |
-| Framework depth (parallel, reporting map) | `docs/ai-instructions.md` |
+| Framework depth (parallel, reporting map) | `docs/ai/ai-instructions.md` |
 | UI test skill workflow | `.cursor/skills/staf-ui-test/SKILL.md` |
 | API test skill workflow | `.cursor/skills/staf-api-test/SKILL.md` |
 | Page/action skill workflow | `.cursor/skills/staf-page-action/SKILL.md` |
@@ -27,12 +27,12 @@ description: >-
 ## Do not
 
 - Paste entire `STAFTests/` or solution into context
-- Load `docs/ai-instructions.md` + all golden files together
+- Load `docs/ai/ai-instructions.md` + all golden files together
 - Read `MCPAgent/` DLL publish output for C# patterns
 
 ## After structural changes
 
-1. Edit `docs/ai-index.json`
+1. Edit `docs/ai/ai-index.json`
 2. `pwsh tools/UpdateAiIndex.ps1`
 
-Human onboarding: [docs/ai-setup.md](../../docs/ai-setup.md) | Prompts: [docs/ai-prompts.md](../../docs/ai-prompts.md)
+Human onboarding: [docs/ai/ai-setup.md](../../docs/ai/ai-setup.md) | Prompts: [docs/ai/ai-prompts.md](../../docs/ai/ai-prompts.md)

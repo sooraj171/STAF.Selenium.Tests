@@ -1,13 +1,13 @@
 # AI setup — Cursor & VS Code
 
-Token-efficient guidance for **STAF.Selenium.Tests**. Full agent entry: [AGENTS.md](../AGENTS.md).
+Token-efficient guidance for **STAF.Selenium.Tests**. Full agent entry: [AGENTS.md](../../AGENTS.md).
 
 ## What loads automatically
 
 | Editor | Always-on | On-demand |
 |--------|-----------|-----------|
-| **Cursor** | `.cursor/rules/staf-selenium-framework.mdc` | File rules when editing matching paths; `@docs/ai-instructions.md`; skills below |
-| **VS Code / VS (Copilot)** | `.github/copilot-instructions.md` | `@docs/ai-instructions.md`, `@docs/ai-index.json`, golden `.cs` files |
+| **Cursor** | `.cursor/rules/staf-selenium-framework.mdc` | File rules when editing matching paths; `@docs/ai/ai-instructions.md`; skills below |
+| **VS Code / VS (Copilot)** | `.github/copilot-instructions.md` | `@docs/ai/ai-instructions.md`, `@docs/ai/ai-index.json`, golden `.cs` files |
 
 Open the **repo root** as the workspace folder so paths resolve.
 
@@ -53,4 +53,4 @@ pwsh tools/UpdateAiIndex.ps1          # validate ai-index.json
 pwsh tools/UpdateAiIndex.ps1 -Discover  # list classes to add to index
 ```
 
-Update `docs/ai-index.json` when you add pages, actions, tests, requests, or DTOs.
+Update `docs/ai/ai-index.json` when you add pages, actions, tests, requests, or DTOs.

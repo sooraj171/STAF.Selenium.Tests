@@ -90,7 +90,7 @@ Step-by-step instructions for using the new cross-platform setup in each IDE.
 	Use nameof() for method names"
 
 7. Verify code
-8. Update docs/ai-index.json: pwsh tools/UpdateAiIndex.ps1
+8. Update docs/ai/ai-index.json: pwsh tools/UpdateAiIndex.ps1
 ```
 
 #### Task 3: Create an API Test
@@ -138,7 +138,7 @@ Step-by-step instructions for using the new cross-platform setup in each IDE.
 
 VS automatically loads from:
 - `.github/copilot-instructions.md` ← All quick rules, patterns
-- `docs/AI_GUIDE.md` ← Referenced for deep dives
+- `docs/ai/AI_GUIDE.md` ← Referenced for deep dives
 
 **No additional setup needed** — just start asking Copilot!
 
@@ -146,7 +146,7 @@ VS automatically loads from:
 
 - ✅ **Reference specific files:** `@STAFTests/Actions/Login.cs`
 - ✅ **Ask step-by-step:** One task per prompt
-- ✅ **Request checklists:** "Verify against the checklist in docs/AI_GUIDE.md"
+- ✅ **Request checklists:** "Verify against the checklist in docs/ai/AI_GUIDE.md"
 - ✅ **Check golden files:** Always open them first for reference
 - ❌ **Don't:** Paste entire error logs (summarize instead)
 
@@ -198,7 +198,7 @@ VS automatically loads from:
 1. Ctrl+Shift+I (Open Copilot Chat)
 2. Type your question
 3. Reference files with @filename: @STAFTests/Actions/Login.cs
-4. Reference docs with #filename: #docs/AI_GUIDE.md
+4. Reference docs with #filename: #docs/ai/AI_GUIDE.md
 5. Review generated code in chat
 6. Click "Insert" or copy/paste
 7. Review and adjust as needed
@@ -221,7 +221,7 @@ Ctrl+Shift+I
  Call action: LoginToApplicationInvalid('bad', 'bad')
  Verify error message displayed
 
- Check docs/AI_GUIDE.md#workflow-1-ui-test for full details"
+ Check docs/ai/AI_GUIDE.md#workflow-1-ui-test for full details"
 ```
 
 #### Example: Create Page + Action
@@ -266,7 +266,7 @@ VS Code automatically uses:
 - `.vscode/settings.json` ← Test settings
 - `.vscode/README.md` ← This IDE's setup guide
 - `.github/copilot-instructions.md` ← Rules & patterns
-- `docs/AI_GUIDE.md` ← Master guide (reference)
+- `docs/ai/AI_GUIDE.md` ← Master guide (reference)
 
 ### Inline Suggestions (Optional)
 
@@ -296,7 +296,7 @@ dotnet test --settings STAFTests/testrunsetting.runsettings
 ### Tips for VS Code
 
 - ✅ **File references:** `@STAFTests/Pages/LoginPage.cs` (auto-complete shows files)
-- ✅ **Doc references:** `#docs/AI_GUIDE.md#workflow-1-ui-test` (specific section)
+- ✅ **Doc references:** `#docs/ai/AI_GUIDE.md#workflow-1-ui-test` (specific section)
 - ✅ **Keep chat focused:** One question at a time
 - ✅ **Copy from golden files:** Open them side-by-side for reference
 - ❌ **Don't:** Ask too many things in one prompt
@@ -428,7 +428,7 @@ Cursor automatically reads:
 - `.cursor/cursor.rules` ← Consistency rules
 - `.cursor/skills/MASTER.md` ← Skill index
 - `.cursor/skills/*/SKILL.md` ← Individual skills
-- `docs/AI_GUIDE.md` ← Full patterns (referenced by skills)
+- `docs/ai/AI_GUIDE.md` ← Full patterns (referenced by skills)
 
 **No setup needed** — Cursor auto-discovers!
 
@@ -477,9 +477,9 @@ Cursor automatically reads:
 
 ### Before Generating
 
-1. ✅ Check `docs/ai-index.json` — reuse existing if possible
+1. ✅ Check `docs/ai/ai-index.json` — reuse existing if possible
 2. ✅ Open golden file in adjacent window — reference while generating
-3. ✅ Have `docs/QUICK_START.md` open — check checklist
+3. ✅ Have `docs/ai/QUICK_START.md` open — check checklist
 4. ✅ Know what files you're creating — be specific in prompt
 
 ### During Generation
@@ -565,7 +565,7 @@ Pattern from existing methods in CreateRequests.cs and APITests.cs
 
 ```
 1. Open your IDE (VS / VS Code / Cursor)
-2. Open docs/QUICK_START.md
+2. Open docs/ai/QUICK_START.md
 3. Find your task
 4. Start coding!
 ```
@@ -584,7 +584,7 @@ Pattern from existing methods in CreateRequests.cs and APITests.cs
 ### Stuck? (2 minutes)
 
 ```
-1. Open docs/AI_GUIDE.md
+1. Open docs/ai/AI_GUIDE.md
 2. Find "Code Patterns" section
 3. Compare your code with examples
 4. Ask AI to explain difference
@@ -597,7 +597,7 @@ Pattern from existing methods in CreateRequests.cs and APITests.cs
 1. **Pick your IDE** (VS, VS Code, or Cursor)
 2. **Read that section above** (🔵, 🟦, or 🟪)
 3. **Try the first example** — Copy/paste a prompt
-4. **Review the checklist** from `docs/QUICK_START.md`
+4. **Review the checklist** from `docs/ai/QUICK_START.md`
 5. **Run your test** — See it pass!
 
 ---

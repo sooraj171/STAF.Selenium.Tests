@@ -11,7 +11,7 @@ Add a [TestMethod] in ParaTests that <scenario>. Use TestBaseClass, NavigateTo(T
 ## New page + action
 
 ```text
-Create {Screen}Page under STAFTests/Pages/ (PageBaseClass, #region ObjectIdentifierValues, FindAppElement properties) and {Screen} action under Actions/ (inherit page, ReportResult + ReportElement*, fluent return). Mirror LoginPage.cs and Login.cs. Update docs/ai-index.json.
+Create {Screen}Page under STAFTests/Pages/ (PageBaseClass, #region ObjectIdentifierValues, FindAppElement properties) and {Screen} action under Actions/ (inherit page, ReportResult + ReportElement*, fluent return). Mirror LoginPage.cs and Login.cs. Update docs/ai/ai-index.json.
 ```
 
 ## API test
@@ -35,5 +35,5 @@ Use selenium-staf to open Chrome at purl from run settings, confirm login form, 
 ## Token-saving reminder (any tool)
 
 ```text
-Before coding: check docs/ai-index.json for existing Page/Action. Reuse Login/AboutUs patterns. Do not read the entire solution.
+Before coding: check docs/ai/ai-index.json for existing Page/Action. Reuse Login/AboutUs patterns. Do not read the entire solution.
 ```

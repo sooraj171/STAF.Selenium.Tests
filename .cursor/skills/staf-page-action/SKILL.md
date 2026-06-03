@@ -113,6 +113,6 @@ public NextScreen ClickSubmit()
 
 ## Full Guide
 
-📖 **Master documentation:** [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md#workflow-2-page--action)
+📖 **Master documentation:** [docs/ai/AI_GUIDE.md](../../docs/ai/AI_GUIDE.md#workflow-2-page--action)
 
 Templates & examples: [reference.md](reference.md)

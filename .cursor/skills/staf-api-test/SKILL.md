@@ -92,7 +92,7 @@ public async Task GetUsersList_Page1_ReturnsSuccess()
 - [ ] **Pass path:** `ReportResultAPI.ReportResultPass(...)`
 - [ ] DTO has `[JsonPropertyName]` attributes for JSON key mapping
 - [ ] All public methods have XML comments
-- [ ] Update `docs/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
+- [ ] Update `docs/ai/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
 
 ## Platforms
 
@@ -110,6 +110,6 @@ public async Task GetUsersList_Page1_ReturnsSuccess()
 
 ## Full Guide
 
-📖 **Master documentation:** [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md#workflow-3-api-test)
+📖 **Master documentation:** [docs/ai/AI_GUIDE.md](../../docs/ai/AI_GUIDE.md#workflow-3-api-test)
 
 Templates & examples: [reference.md](reference.md)

@@ -5,9 +5,9 @@
 **To regenerate the PDF** (requires Node.js):
 
 ```bash
-cd docs
+cd docs/details/pdf-build
 npm install
 npm run generate-pdf
 ```
 
-The PDF is generated from **STAF-Framework-User-Guide.html**. You can also open that HTML file in a browser and use **Print → Save as PDF** if you prefer not to use Node.js.
+The PDF is generated from **[STAF-Framework-User-Guide.html](../STAF-Framework-User-Guide.html)** in the parent `docs/` folder. You can also open that HTML file in a browser and use **Print → Save as PDF** if you prefer not to use Node.js.

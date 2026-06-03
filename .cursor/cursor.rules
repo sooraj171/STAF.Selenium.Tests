@@ -147,13 +147,13 @@ STAFTests/
 1. Create `STAFTests/Pages/{Screen}Page.cs`
 2. Create `STAFTests/Actions/{Screen}.cs`
 3. Add tests in `STAFTests/Tests/{Feature}Tests.cs`
-4. Update `docs/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
+4. Update `docs/ai/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
 
 **New API Test:**
 1. Add method to `STAFTests/Requests/CreateRequests.cs` (or create new `*Requests.cs`)
 2. Create `STAFTests/APIData/{ResponseShape}DTO.cs`
 3. Add test to `STAFTests/Tests/APITests.cs`
-4. Update `docs/ai-index.json`
+4. Update `docs/ai/ai-index.json`
 
 ---
 
@@ -248,7 +248,7 @@ public AccountsOverview LoginToApplication(string userName, string password)
 ### Commit Guidelines
 
 - **Create Page+Action together** — commit both in same change
-- **Update `docs/ai-index.json`** when adding new page/action/request/DTO
+- **Update `docs/ai/ai-index.json`** when adding new page/action/request/DTO
 - **Run tests before committing** — ensure no regressions
 - **Use meaningful messages:** "Add LoginPage + Login action flow" (not "update")
 
@@ -281,7 +281,7 @@ pwsh tools/UpdateAiIndex.ps1
 > "No raw driver.FindElement — use page properties only"
 
 **Ask for checklist:**
-> "Before finishing, verify the code meets the checklist in docs/AI_GUIDE.md"
+> "Before finishing, verify the code meets the checklist in docs/ai/AI_GUIDE.md"
 
 **Reference golden examples:**
 > "Pattern from LoginPage.cs, Login.cs, and ParaTests.cs"
@@ -295,7 +295,7 @@ If code generation violates these rules, **Cursor should:**
 1. **Point out the rule** being violated
 2. **Show the correct pattern** from golden files
 3. **Ask for confirmation** before proceeding with non-standard code
-4. **Reference documentation** — `docs/AI_GUIDE.md` or `.cursor/skills/MASTER.md`
+4. **Reference documentation** — `docs/ai/AI_GUIDE.md` or `.cursor/skills/MASTER.md`
 
 **Example dialog:**
 > "This code uses `Thread.Sleep()`, which violates the STAF rules. Use `FindAppElement()` instead, which auto-waits. Let me fix this — [corrected code]"
@@ -306,14 +306,14 @@ If code generation violates these rules, **Cursor should:**
 
 | File | Purpose |
 |------|---------|
-| `docs/AI_GUIDE.md` | Master guide; comprehensive patterns & workflows |
+| `docs/ai/AI_GUIDE.md` | Master guide; comprehensive patterns & workflows |
 | `.cursor/skills/MASTER.md` | Skill index; quick navigation |
 | `.cursor/skills/staf-ui-test/SKILL.md` | UI test skill |
 | `.cursor/skills/staf-page-action/SKILL.md` | Page + action skill |
 | `.cursor/skills/staf-api-test/SKILL.md` | API test skill |
 | `.github/copilot-instructions.md` | Visual Studio GitHub Copilot rules |
 | `.vscode/README.md` | VS Code Copilot setup |
-| `docs/ai-index.json` | Symbol index (generated) |
+| `docs/ai/ai-index.json` | Symbol index (generated) |
 
 ---
 
@@ -323,7 +323,7 @@ If code generation violates these rules, **Cursor should:**
 
 - [ ] Identify workflow: UI Test, Page+Action, or API Test
 - [ ] Check golden files for pattern
-- [ ] Reference `docs/ai-index.json` for existing similar code
+- [ ] Reference `docs/ai/ai-index.json` for existing similar code
 - [ ] Plan file locations and class names
 
 ### During Generation (Cursor Tips)
@@ -337,7 +337,7 @@ If code generation violates these rules, **Cursor should:**
 
 - [ ] Build: `dotnet build STAFTests/STAF.Selenium.Tests.csproj`
 - [ ] Run tests: `dotnet test --filter "ClassName~YourClass"`
-- [ ] Update `docs/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
+- [ ] Update `docs/ai/ai-index.json`: `pwsh tools/UpdateAiIndex.ps1`
 - [ ] Verify all public methods have XML comments
 - [ ] Check inheritance (PageBaseClass, TestBaseClass, etc.)
 

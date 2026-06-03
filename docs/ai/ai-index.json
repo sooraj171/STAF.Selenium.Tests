@@ -10,7 +10,7 @@
     "project": "STAFTests/STAF.Selenium.Tests.csproj"
   },
   "goldenExamples": [
-    "docs/ai-instructions.md",
+    "docs/ai/ai-instructions.md",
     "STAFTests/Pages/LoginPage.cs",
     "STAFTests/Actions/Login.cs",
     "STAFTests/Tests/ParaTests.cs",

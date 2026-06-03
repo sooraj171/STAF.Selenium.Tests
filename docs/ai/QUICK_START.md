@@ -12,7 +12,7 @@ Get started in 5 minutes. Choose your platform and task.
 | **Create a new page/screen** | 5 min | [Create Page + Action](#create-page--action) |
 | **Create an API test** | 5 min | [Create API Test](#create-api-test) |
 | **Explore the framework** | 10 min | [Framework Overview](#framework-overview) |
-| **Reference code patterns** | varies | [docs/AI_GUIDE.md](./AI_GUIDE.md) |
+| **Reference code patterns** | varies | [docs/ai/AI_GUIDE.md](./AI_GUIDE.md) |
 
 ---
 
@@ -60,7 +60,7 @@ dotnet test --filter "FullyQualifiedName~STAFTests.MyTests.LoginToApp_ValidCrede
 ### Next Steps
 
 - **Explore:** Open `STAFTests/Tests/ParaTests.cs` to see more examples
-- **Learn:** Read [docs/AI_GUIDE.md#workflow-1-ui-test](./AI_GUIDE.md#workflow-1-ui-test)
+- **Learn:** Read [docs/ai/AI_GUIDE.md#workflow-1-ui-test](./AI_GUIDE.md#workflow-1-ui-test)
 - **Ask AI:** Use GitHub Copilot or Cursor to generate similar tests
 
 ---
@@ -73,7 +73,7 @@ You want to automate a new screen/page with multiple interactions.
 ### Files
 1. Create: `STAFTests/Pages/MyNewPage.cs`
 2. Create: `STAFTests/Actions/MyNew.cs`
-3. Update: `docs/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
+3. Update: `docs/ai/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
 
 ### Step 1: Create Page
 
@@ -177,12 +177,12 @@ public void MyNewScreen_SubmitForm_Success()
 - [ ] All methods have XML comments
 - [ ] Methods return `this` (stay) or `new NextPage(driver, context)` (navigate)
 - [ ] All steps have `ReportResult` calls
-- [ ] Updated `docs/ai-index.json`
+- [ ] Updated `docs/ai/ai-index.json`
 
 ### Next Steps
 
 - **Explore:** Open `STAFTests/Pages/LoginPage.cs` and `STAFTests/Actions/Login.cs`
-- **Learn:** Read [docs/AI_GUIDE.md#workflow-2-page--action](./AI_GUIDE.md#workflow-2-page--action)
+- **Learn:** Read [docs/ai/AI_GUIDE.md#workflow-2-page--action](./AI_GUIDE.md#workflow-2-page--action)
 - **Ask AI:** Use Copilot/Cursor to generate page + action pair
 
 ---
@@ -283,7 +283,7 @@ public async Task GetUsersList_Page1_ReturnsSuccess()
 - [ ] Test checks status code **before** parsing content
 - [ ] Fail path: `ReportResultAPI.ReportResultFail(...)` → `Assert.Fail(...)`
 - [ ] Pass path: `ReportResultAPI.ReportResultPass(...)`
-- [ ] Updated `docs/ai-index.json`
+- [ ] Updated `docs/ai/ai-index.json`
 
 ### Run It
 
@@ -295,7 +295,7 @@ dotnet test --filter "FullyQualifiedName~STAFTests.APITests.GetUsersList_Page1_R
 ### Next Steps
 
 - **Explore:** Open `STAFTests/Tests/APITests.cs` and `STAFTests/Requests/CreateRequests.cs`
-- **Learn:** Read [docs/AI_GUIDE.md#workflow-3-api-test](./AI_GUIDE.md#workflow-3-api-test)
+- **Learn:** Read [docs/ai/AI_GUIDE.md#workflow-3-api-test](./AI_GUIDE.md#workflow-3-api-test)
 - **Ask AI:** Use Copilot/Cursor to generate API tests
 
 ---
@@ -370,12 +370,12 @@ accountsPage.ClickLogout();
 
 | Document | Best For | Link |
 |----------|----------|------|
-| **Master AI Guide** | Complete patterns, templates, examples | [docs/AI_GUIDE.md](./AI_GUIDE.md) |
+| **Master AI Guide** | Complete patterns, templates, examples | [docs/ai/AI_GUIDE.md](./AI_GUIDE.md) |
 | **VS GitHub Copilot** | Visual Studio users | [.github/copilot-instructions.md](../.github/copilot-instructions.md) |
 | **VS Code Setup** | VS Code + Copilot users | [.vscode/README.md](../.vscode/README.md) |
 | **Cursor Skills** | Cursor editor users | [.cursor/skills/MASTER.md](../.cursor/skills/MASTER.md) |
 | **Cursor Rules** | Code generation consistency | [.cursor/cursor.rules](../.cursor/cursor.rules) |
-| **Symbol Index** | Finding classes/methods | `docs/ai-index.json` |
+| **Symbol Index** | Finding classes/methods | `docs/ai/ai-index.json` |
 
 ---
 
@@ -418,7 +418,7 @@ accountsPage.ClickLogout();
 
 ### Copilot Not Helping
 1. Reference specific golden files: `@STAFTests/Actions/Login.cs`
-2. Reference docs: `#docs/AI_GUIDE.md`
+2. Reference docs: `#docs/ai/AI_GUIDE.md`
 3. Ask step-by-step (one task at a time)
 4. Include error messages in your prompt
 
@@ -441,7 +441,7 @@ accountsPage.ClickLogout();
 |----------|--------|
 | **Where are the golden examples?** | `STAFTests/Tests/ParaTests.cs`, `STAFTests/Actions/Login.cs`, `STAFTests/Pages/LoginPage.cs` |
 | **How do I run a specific test?** | Use `dotnet test --filter "FullyQualifiedName~Namespace.Class.Method"` |
-| **What's the difference between Page and Action?** | **Page:** locators only. **Action:** user flows + assertions. Read [docs/AI_GUIDE.md](./AI_GUIDE.md) |
+| **What's the difference between Page and Action?** | **Page:** locators only. **Action:** user flows + assertions. Read [docs/ai/AI_GUIDE.md](./AI_GUIDE.md) |
 | **Can I use raw `driver.FindElement`?** | No. Always use `FindAppElement` or page properties. |
 | **Do I need to update `ai-index.json`?** | Yes, after creating new pages/actions/requests. Run `pwsh tools/UpdateAiIndex.ps1` |
 | **How long should a test method be?** | Thin — usually 3-5 lines. Logic goes in actions. |

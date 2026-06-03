@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Validate or discover symbols for docs/ai-index.json (STAF.Selenium.Tests).
+    Validate or discover symbols for docs/ai/ai-index.json (STAF.Selenium.Tests).
 
 .DESCRIPTION
     -Default: validates that each symbol's file exists and declares the class.
@@ -17,7 +17,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
-$indexPath = Join-Path $repoRoot 'docs/ai-index.json'
+$indexPath = Join-Path $repoRoot 'docs/ai/ai-index.json'
 
 if (-not (Test-Path $indexPath)) {
     Write-Error "Missing $indexPath"
@@ -84,5 +84,5 @@ if ($failures.Count -gt 0) {
 }
 
 $n = @($index.symbols.PSObject.Properties).Count
-Write-Host "docs/ai-index.json: all $n symbols validated OK." -ForegroundColor Green
+Write-Host "docs/ai/ai-index.json: all $n symbols validated OK." -ForegroundColor Green
 exit 0

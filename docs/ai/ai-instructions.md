@@ -1,6 +1,6 @@
 # STAF.Selenium.Tests — AI context (token-efficient)
 
-Attach with `@docs/ai-instructions.md` **only** when generating Pages, Actions, or Tests. For lighter loads use [AGENTS.md](../AGENTS.md) or [ai-index.json](ai-index.json).
+Attach with `@docs/ai/ai-instructions.md` **only** when generating Pages, Actions, or Tests. For lighter loads use [AGENTS.md](../AGENTS.md) or [ai-index.json](ai-index.json).
 
 | Tool | Always-on | Skills / setup |
 |------|-----------|----------------|
@@ -28,7 +28,7 @@ Attach with `@docs/ai-instructions.md` **only** when generating Pages, Actions, 
 | `STAFTests/Tests/` | `[TestClass]` / `[TestMethod]` |
 | `STAFTests/Requests/` | REST helpers (e.g. `CreateRequests`) |
 | `STAFTests/APIData/` | DTOs for API tests |
-| `docs/ai-index.json` | Machine index: symbols → files (for selective `@` context) |
+| `docs/ai/ai-index.json` | Machine index: symbols → files (for selective `@` context) |
 
 ---
 
@@ -131,4 +131,4 @@ public void CanOpenParabank()
 ## Token discipline
 
 - Default chat: rely on `.cursor/rules` only.
-- For **new** POM/test: `@docs/ai-index.json` + `@docs/ai-instructions.md` + **one** existing Action + **one** Test — not the whole solution.
+- For **new** POM/test: `@docs/ai/ai-index.json` + `@docs/ai/ai-instructions.md` + **one** existing Action + **one** Test — not the whole solution.

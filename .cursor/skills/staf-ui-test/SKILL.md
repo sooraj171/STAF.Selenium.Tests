@@ -10,7 +10,7 @@ description: >-
 
 ## Quick Workflow
 
-1. **Check** `docs/ai-index.json` for existing Page/Action
+1. **Check** `docs/ai/ai-index.json` for existing Page/Action
 2. **If missing** → use skill **staf-page-action** first (create Page → Action)
 3. **Add `[TestMethod]`** in `STAFTests/Tests/{Feature}Tests.cs` inheriting `TestBaseClass`
 4. **Arrange:** `NavigateTo(TestContext.Properties["purl"].ToString())` or action that navigates
@@ -62,6 +62,6 @@ public void LoginToApp_ValidCredentials_Success()
 
 ## Full Guide
 
-📖 **Master documentation:** [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md#workflow-1-ui-test)
+📖 **Master documentation:** [docs/ai/AI_GUIDE.md](../../docs/ai/AI_GUIDE.md#workflow-1-ui-test)
 
 Templates & examples: [reference.md](reference.md)

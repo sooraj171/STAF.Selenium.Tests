@@ -62,10 +62,10 @@ public async Task GetUsers_Page1_ReturnsSuccess()
 
 | Need | File |
 |------|------|
-| Full API patterns | `docs/AI_GUIDE.md` — Workflow 3 |
-| Quick task entry | `docs/QUICK_START.md` |
-| Symbol lookup | `docs/ai-index.json` |
-| Copy-paste prompts | `docs/ai-prompts.md` |
+| Full API patterns | `docs/ai/AI_GUIDE.md` — Workflow 3 |
+| Quick task entry | `docs/ai/QUICK_START.md` |
+| Symbol lookup | `docs/ai/ai-index.json` |
+| Copy-paste prompts | `docs/ai/ai-prompts.md` |
 
 ## Before finishing
 

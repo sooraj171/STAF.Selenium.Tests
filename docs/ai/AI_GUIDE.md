@@ -157,7 +157,7 @@ dotnet test --filter "FullyQualifiedName~YourNamespace.YourClass.YourMethod" --s
 
 3. **Wire into flow**
    - [ ] Return chain calls navigate to next action: `.ThenClickNext().VerifyNextLoaded()`
-   - [ ] Update `docs/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
+   - [ ] Update `docs/ai/ai-index.json` (run `pwsh tools/UpdateAiIndex.ps1`)
 
 #### Page Template
 
@@ -272,7 +272,7 @@ public NextScreen ClickSubmit()
 - [ ] Response status checked first (200, 201, 400, 404, etc.)
 - [ ] Fail path: `ReportResultAPI.ReportResultFail(...)` → `Assert.Fail(...)`
 - [ ] Pass path: `ReportResultAPI.ReportResultPass(...)`
-- [ ] Update `docs/ai-index.json` for new request/DTO/test symbols
+- [ ] Update `docs/ai/ai-index.json` for new request/DTO/test symbols
 
 #### Request Method Template
 
@@ -499,13 +499,18 @@ STAFTests/
 └── *.cs                            (Helpers, extensions)
 
 docs/
-├── AI_GUIDE.md                     (This file — master reference)
-├── QUICK_START.md                  (Entry point for new users)
-├── ai-index.json                   (Symbol index for agents)
-└── *.md
+├── README.md                       (Documentation hub)
+├── Architecture-Summary.md
+├── STAF-Framework-User-Guide.html
+├── ai/
+│   ├── AI_GUIDE.md                 (This file — master reference)
+│   ├── QUICK_START.md
+│   └── ai-index.json
+└── details/                        (Extended / maintainer reference)
 
 .github/
-└── copilot-instructions.md         (Visual Studio GitHub Copilot entry point)
+├── copilot-instructions.md
+└── agents/                         (VS custom agents: UI & API)
 
 .cursor/
 ├── skills/
@@ -596,8 +601,8 @@ If errors, check:
 
 ### Documentation Files
 
-- `docs/AI_GUIDE.md` — **This file** (comprehensive patterns & workflows)
-- `docs/QUICK_START.md` — Quick platform-specific navigation
+- `docs/ai/AI_GUIDE.md` — **This file** (comprehensive patterns & workflows)
+- `docs/ai/QUICK_START.md` — Quick platform-specific navigation
 - `.github/copilot-instructions.md` — Visual Studio GitHub Copilot rules
 - `.cursor/skills/MASTER.md` — Cursor skill index
 - `.vscode/README.md` — VS Code Copilot setup

@@ -36,7 +36,7 @@
 
 ## Master Documentation
 
-**Single source of truth:** [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md)
+**Single source of truth:** [docs/ai/AI_GUIDE.md](../../docs/ai/AI_GUIDE.md)
 
 Contains:
 - Full workflow descriptions (UI Test, Page+Action, API Test)
@@ -46,7 +46,7 @@ Contains:
 - Framework class reference
 - AI prompt examples
 
-**Quick start:** [docs/QUICK_START.md](../../docs/QUICK_START.md)
+**Quick start:** [docs/ai/QUICK_START.md](../../docs/ai/QUICK_START.md)
 
 ---
 
@@ -69,7 +69,7 @@ public void LoginToApp_ValidCredentials_Success()
 }
 ```
 
-**See:** [staf-ui-test/SKILL.md](./staf-ui-test/SKILL.md) | [docs/AI_GUIDE.md#workflow-1-ui-test](../../docs/AI_GUIDE.md#workflow-1-ui-test)
+**See:** [staf-ui-test/SKILL.md](./staf-ui-test/SKILL.md) | [docs/ai/AI_GUIDE.md#workflow-1-ui-test](../../docs/ai/AI_GUIDE.md#workflow-1-ui-test)
 
 ---
 
@@ -84,7 +84,7 @@ public void LoginToApp_ValidCredentials_Success()
 **Order:**
 1. Page first (locators)
 2. Action second (flows)
-3. Update `docs/ai-index.json`
+3. Update `docs/ai/ai-index.json`
 
 ```csharp
 // Page
@@ -108,7 +108,7 @@ public class Login : LoginPage
 }
 ```
 
-**See:** [staf-page-action/SKILL.md](./staf-page-action/SKILL.md) | [docs/AI_GUIDE.md#workflow-2-page--action](../../docs/AI_GUIDE.md#workflow-2-page--action)
+**See:** [staf-page-action/SKILL.md](./staf-page-action/SKILL.md) | [docs/ai/AI_GUIDE.md#workflow-2-page--action](../../docs/ai/AI_GUIDE.md#workflow-2-page--action)
 
 ---
 
@@ -160,7 +160,7 @@ public async Task GetUsers_Page1_ReturnsSuccess()
 }
 ```
 
-**See:** [staf-api-test/SKILL.md](./staf-api-test/SKILL.md) | [docs/AI_GUIDE.md#workflow-3-api-test](../../docs/AI_GUIDE.md#workflow-3-api-test)
+**See:** [staf-api-test/SKILL.md](./staf-api-test/SKILL.md) | [docs/ai/AI_GUIDE.md#workflow-3-api-test](../../docs/ai/AI_GUIDE.md#workflow-3-api-test)
 
 ---
 
@@ -237,7 +237,7 @@ dotnet build STAFTests/STAF.Selenium.Tests.csproj
    - *"Create a UI test. Before finishing, verify against the staf-ui-test checklist."*
 
 4. **Cross-reference the guide:**
-   - *"Review docs/AI_GUIDE.md#code-patterns for element finders"*
+   - *"Review docs/ai/AI_GUIDE.md#code-patterns for element finders"*
 
 ---
 
@@ -245,7 +245,7 @@ dotnet build STAFTests/STAF.Selenium.Tests.csproj
 
 ### After Creating New Code
 
-1. **Update `docs/ai-index.json`**
+1. **Update `docs/ai/ai-index.json`**
    - Run: `pwsh tools/UpdateAiIndex.ps1`
    - Regenerates symbol index for agents
 
@@ -265,7 +265,7 @@ dotnet build STAFTests/STAF.Selenium.Tests.csproj
 ### Visual Studio
 
 - This repository also has `.github/copilot-instructions.md` for VS GitHub Copilot
-- Reference the same `docs/AI_GUIDE.md` when using VS
+- Reference the same `docs/ai/AI_GUIDE.md` when using VS
 - All skills work identically across platforms
 
 ### VS Code
@@ -285,9 +285,9 @@ dotnet build STAFTests/STAF.Selenium.Tests.csproj
 
 | Resource | Path | Purpose |
 |----------|------|---------|
-| Master AI Guide | [docs/AI_GUIDE.md](../../docs/AI_GUIDE.md) | Comprehensive patterns, workflows, templates |
-| Quick Start | [docs/QUICK_START.md](../../docs/QUICK_START.md) | Platform navigation for new users |
-| Symbol Index | `docs/ai-index.json` | Generated class/method reference |
+| Master AI Guide | [docs/ai/AI_GUIDE.md](../../docs/ai/AI_GUIDE.md) | Comprehensive patterns, workflows, templates |
+| Quick Start | [docs/ai/QUICK_START.md](../../docs/ai/QUICK_START.md) | Platform navigation for new users |
+| Symbol Index | `docs/ai/ai-index.json` | Generated class/method reference |
 | Cursor Rules | [.cursor/cursor.rules](.././cursor.rules) | Consistency rules for Cursor |
 | VS Code Setup | [.vscode/README.md](.././../vscode/README.md) | GitHub Copilot config for VS Code |
 | VS Instructions | [.github/copilot-instructions.md](.././../github/copilot-instructions.md) | Visual Studio GitHub Copilot rules |

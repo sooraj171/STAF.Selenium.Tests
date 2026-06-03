@@ -1,6 +1,6 @@
 # STAF.Selenium.Tests – Architecture Summary (One-Page)
 
-**Full detail:** [Technical-Architecture.md](Technical-Architecture.md) | **Diagrams:** [Architecture-Diagram.md](Architecture-Diagram.md) | **Formal architecture & innovation (academic/legal):** [STAF-Framework-Architecture-and-Technical-Innovation.md](STAF-Framework-Architecture-and-Technical-Innovation.md)
+**Full detail:** [details/Technical-Architecture.md](details/Technical-Architecture.md) | **Diagrams:** [details/Architecture-Diagram.md](details/Architecture-Diagram.md) | **Formal write-up:** [details/STAF-Framework-Architecture-and-Technical-Innovation.md](details/STAF-Framework-Architecture-and-Technical-Innovation.md)
 
 ---
 
