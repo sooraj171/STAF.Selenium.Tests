@@ -6,7 +6,7 @@ namespace STAFTests
     [TestClass]
     public class GoogleSearchTest: TestBaseClass
     {
-        //Implementing Pqge Object in Simple way
+        // Google flows are environment-dependent: CAPTCHA or UI changes can cause intermittent failures.
 
         [TestMethod]
         public void VerifyGoogleSearch()

@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
 using STAF.CF;
 
@@ -86,17 +88,31 @@ namespace STAFTests
             string testName = "selectFirstItemFromResult";
             try
             {
-                IList<IWebElement> temp = Driver.FindElements(By.XPath("//div[@id='res']//a"));
-                
-                if (temp != null && temp.Count>0)
+                var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(15));
+                IWebElement firstLink = wait.Until(driver =>
                 {
-                    temp[0].Click();
-                    ReportResult.ReportResultPass(Driver, context, testName, "Clicked on the first item from search result.");
-                }
-                else
-                {
-                    ReportResult.ReportResultFail(Driver, context, testName, "Not able to click the search term.");
-                }
+                    var resultLinks = driver.FindElements(By.CssSelector("div#search a h3, div#rso a h3"));
+                    foreach (var heading in resultLinks)
+                    {
+                        try
+                        {
+                            var link = heading.FindElement(By.XPath("./ancestor::a[1]"));
+                            if (link.Displayed)
+                            {
+                                return link;
+                            }
+                        }
+                        catch (NoSuchElementException)
+                        {
+                            // try next heading
+                        }
+                    }
+
+                    return null;
+                });
+
+                firstLink.Click();
+                ReportResult.ReportResultPass(Driver, context, testName, "Clicked on the first item from search result.");
             }
             catch
             {

@@ -2,7 +2,7 @@
 
 **Master reference:** [docs/ai/AI_GUIDE.md](../docs/ai/AI_GUIDE.md) — Single source of truth for all platforms (Visual Studio, VS Code, Cursor).
 
-## Framework
+---
 
 ## Platform-Specific Entry Points
 

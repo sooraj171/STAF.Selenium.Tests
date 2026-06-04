@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using STAF.CF;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,7 +23,8 @@ namespace STAFTests
             {
                 try
                 {
-                    _divSearch = new WebDriverWait(Driver, TimeSpan.FromSeconds(10)).Until(ExpectedConditions.ElementExists(By.CssSelector("h1[class*='top-card-layout']")));
+                    _divSearch = new WebDriverWait(Driver, TimeSpan.FromSeconds(10))
+                        .Until(driver => driver.FindElement(By.CssSelector("h1[class*='top-card-layout']")));
                 }
                 catch
                 {
