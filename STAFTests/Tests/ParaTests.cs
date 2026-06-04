@@ -43,7 +43,8 @@ namespace STAFTests
         }
 
         /// <summary>
-        /// Test will fail if login is success.
+        /// Expects an error message for invalid credentials. Fails when ParaBank incorrectly accepts
+        /// the login (known demo-app issue); that failure is expected and documents the app defect.
         /// </summary>
         [TestMethod]
         public void LoginToAppWithInvalidId()

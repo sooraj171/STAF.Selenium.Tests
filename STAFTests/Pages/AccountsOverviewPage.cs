@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using STAF.CF;
 using System;
 using System.Collections.Generic;
@@ -16,7 +14,7 @@ namespace STAFTests
         /// Section to set the property value for objects
         /// </summary>
         #region ObjectIdentifierValues
-        private string _headerTitle = "//h1[text()='Accounts Overview']";
+        private string _headerTitle = "//h1[contains(normalize-space(),'Accounts Overview')]";
         #endregion
         public AccountsOverviewPage(IWebDriver _driver, TestContext testContext):base(_driver,testContext)
         {

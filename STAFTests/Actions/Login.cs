@@ -1,7 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using STAF.CF;
 using STAF;
+using System;
 
 namespace STAFTests
 {
@@ -63,6 +65,7 @@ namespace STAFTests
                     EnterUserName(strUser);
                     EnterPassword(strPwd);
                     ClickLogin();
+                    WaitForAccountsOverview();
                     ReportResult.ReportResultPass(Driver, context, testName, "Logged Into the Application.");
                 }
                 else
@@ -84,9 +87,7 @@ namespace STAFTests
         /// <returns></returns>
         public Login VerifyInvalidUserMessageIsDisplayed()
         {
-            
             lblError.ReportElementIsDisplayed(Driver, context, nameof(VerifyInvalidUserMessageIsDisplayed), "Verify Invalid User Message IsDisplayed");
-            
             return this;
         }
 
@@ -114,6 +115,12 @@ namespace STAFTests
         public void ClickLogin()
         {
             btnLogin.Click();
+        }
+
+        private void WaitForAccountsOverview()
+        {
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(15)).Until(driver =>
+                driver.Url.Contains("overview", StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
