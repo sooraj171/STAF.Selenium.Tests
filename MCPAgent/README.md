@@ -1,89 +1,70 @@
-# MCP Sharp STAF Selenium – Extension
+# MCP servers
 
-Self-contained MCP server build for easy reuse. Copy this **extension** folder into your test project and reference the exe from your MCP configuration. The server uses **stdio** (stdin/stdout) as the transport—no network port or URL.
+This folder ships two local MCP servers. Both use **stdio** (stdin/stdout). No port or URL is required. This repo already points Cursor, VS Code, and Visual Studio at them.
 
-## Contents
+| Server | Executable | Role |
+|--------|------------|------|
+| **selenium-staf** | `MCPAgent/publish/mcp-sharp-staf-selenium.exe` | Browser automation and STAF-aware code generation |
+| **azure-devops** | `MCPAgent/AzureDevOps/AzureDevOps.Mcp.Server.exe` | Azure DevOps tools (work items, repos, pipelines, and the other domains enabled by `-d all`) |
 
-- **publish/** – Published build (win-x64, self-contained, .NET 10). Populated by running the rebuild script or publish command below.
-  - **mcp-sharp-staf-selenium.exe** – MCP server; launch this exe and the MCP client communicates via stdio.
+## Checked-in configuration
 
-## Usage
+| Editor | File |
+|--------|------|
+| Cursor | [.cursor/mcp.json](../.cursor/mcp.json) |
+| VS Code | [.vscode/mcp.json](../.vscode/mcp.json) |
+| Visual Studio | [.mcp.json](../.mcp.json) |
 
-### 1. Copy extension into your project
+Open the solution from the repo root (the folder that contains `STAF.Selenium.Tests.sln` and `MCPAgent/`).
 
-Copy the entire `extension` folder into your test project root:
-
-```
-YourTestProject/
-├── extension/
-│   └── publish/
-│       └── mcp-sharp-staf-selenium.exe
-├── YourTests.csproj
-└── ...
-```
-
-### 2. Add MCP configuration
-
-Point your MCP client to the exe. The server uses **stdio** transport (stdin/stdout).
-
-**Cursor** – Add to `.cursor/mcp.json` or Cursor Settings → MCP:
+**selenium-staf** (all three files):
 
 ```json
-{
-  "mcpServers": {
-    "selenium-staf": {
-      "command": "extension/publish/mcp-sharp-staf-selenium.exe",
-      "args": []
-    }
-  }
-}
+"command": "MCPAgent/publish/mcp-sharp-staf-selenium.exe"
 ```
 
-**Visual Studio (Professional / 2022 17.14+)** – This repo includes a root-level **`.mcp.json`** so Visual Studio discovers the MCP server automatically when you open the solution (GitHub Copilot → Agent mode). No extra setup needed after get latest. If the agent does not start:
-
-- Ensure the solution is opened from the repo root (folder that contains `STAF.Selenium.Tests.sln` and `MCPAgent/`).
-- In Visual Studio: **GitHub Copilot Chat** → mode **Agent** → enable the **selenium-staf** tools when prompted.
-- Optional: add or merge the same server into `%USERPROFILE%\.mcp.json` for a user-wide config, or into `.vs/mcp.json` (repo `.vs` folder, user-specific) if you need a different path (e.g. absolute path to the exe).
-
-**Claude Desktop** – Add to `claude_desktop_config.json`:
+**azure-devops** prompts for the organization (`ado_org`), signs in interactively, and enables every domain:
 
 ```json
-{
-  "mcpServers": {
-    "selenium-staf": {
-      "command": "extension/publish/mcp-sharp-staf-selenium.exe",
-      "args": []
-    }
-  }
-}
+"command": "MCPAgent/AzureDevOps/AzureDevOps.Mcp.Server.exe",
+"args": ["${input:ado_org}", "-a", "interactive", "-d", "all"]
 ```
 
-Use an absolute path if needed:
+Optional environment values in the same config scope the server to one project or team. Leave them empty to choose later:
+
+- `ado_mcp_project`
+- `ado_mcp_team`
+
+### Cursor
+
+Config is in `.cursor/mcp.json` (`mcpServers`). On first use, approve **selenium-staf** and **azure-devops**, and enter the Azure DevOps organization when prompted (for example `contoso`).
+
+### VS Code
+
+Config is in `.vscode/mcp.json` (`servers`). Start or enable both servers from the MCP panel. The `ado_org` input asks for the organization name.
+
+### Visual Studio (Copilot Agent mode)
+
+Config is in the repo-root `.mcp.json` (`servers`). GitHub Copilot discovers it when the solution is opened from the repo root.
+
+- **GitHub Copilot Chat** → mode **Agent** → enable **selenium-staf** and **azure-devops** when prompted.
+- Optional: merge the same servers into `%USERPROFILE%\.mcp.json` for a user-wide config, or into `.vs/mcp.json` if you need an absolute path to an exe.
+
+## Using the servers in another project
+
+Copy `MCPAgent/publish/` for **selenium-staf**, and `MCPAgent/AzureDevOps/` for **azure-devops**. Point `command` at those exes. Use an absolute path when the client does not run from the repo root:
 
 ```json
-"command": "C:/path/to/YourTestProject/extension/publish/mcp-sharp-staf-selenium.exe"
+"command": "C:/path/to/YourTestProject/MCPAgent/publish/mcp-sharp-staf-selenium.exe"
 ```
 
-## Rebuilding (get latest from main project)
+Example fragments:
 
-To refresh `extension/publish` with the latest build from `mcp-sharp-staf-selenium.csproj`:
+- [mcp-config.example.json](mcp-config.example.json) — selenium-staf
+- [AzureDevOps/mcp-config.example.json](AzureDevOps/mcp-config.example.json) — azure-devops
 
-**From repo root:**
+## What is not in this folder
 
-```powershell
-.\extension\rebuild.ps1
-```
+The **selenium-staf** source lives in [mcp-sharp-staf-selenium](https://github.com/sooraj171/mcp-sharp-staf-selenium). This repo includes the published Windows executable only. There is no rebuild script here; replace `MCPAgent/publish/` with a new publish output when you rebuild that project.
 
-Or with cmd:
-
-```cmd
-extension\rebuild.cmd
-```
-
-Or manually:
-
-```bash
-dotnet publish mcp-sharp-staf-selenium/mcp-sharp-staf-selenium.csproj -c Release -r win-x64 --self-contained true -o extension/publish
-```
-
-Requires .NET 10 SDK. After rebuilding, copy the updated `extension` folder (including `publish/`) into your test project.
+The test project does not reference either server at build or `dotnet test` time.

@@ -3,6 +3,21 @@
     "selenium-staf": {
       "command": "MCPAgent/publish/mcp-sharp-staf-selenium.exe",
       "args": []
+    },
+    "azure-devops": {
+      "command": "MCPAgent/AzureDevOps/AzureDevOps.Mcp.Server.exe",
+      "args": ["${input:ado_org}", "-a", "interactive", "-d", "all"],
+      "env": {
+        "ado_mcp_project": "",
+        "ado_mcp_team": ""
+      }
     }
-  }
+  },
+  "inputs": [
+    {
+      "id": "ado_org",
+      "type": "promptString",
+      "description": "Azure DevOps organization name (e.g. 'contoso')"
+    }
+  ]
 }

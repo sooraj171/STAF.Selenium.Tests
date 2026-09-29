@@ -42,9 +42,9 @@ After a run, open **TestResults** for per-test HTML reports and the assembly sum
 | **Accessibility** | Axe in `ParaTests.LoginToApp` |
 | **Parallel runs** | MSTest `Parallelize` in run settings |
 
-See [RELEASE_NOTES.md](RELEASE_NOTES.md) for framework and .NET 10 upgrade notes.
+See [RELEASE_NOTES.md](RELEASE_NOTES.md) for the .NET 10 upgrade and the current dependency refresh.
 
-**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
+**AI index maintenance:** After adding or renaming pages, actions, or tests, update `docs/ai/ai-index.json` and run `powershell -File tools/UpdateAiIndex.ps1` from the repo root to validate (or `pwsh` if you use PowerShell 7). Use `-Discover` to list classes under `STAFTests/Pages`, `Actions`, `Tests`, `Requests`, and `APIData`.
 
 ---
 
@@ -57,7 +57,9 @@ STAF.Selenium.Tests/
 ├── STAF.Selenium.Tests.sln
 ├── STAFTests/                # Test project (Pages, Actions, Tests, Requests, APIData)
 ├── docs/                     # User guide, architecture summary, AI docs
-├── MCPAgent/                 # Optional MCP server for AI + browser tools
+├── MCPAgent/                 # Optional MCP servers (stdio)
+│   ├── publish/              # selenium-staf browser and codegen
+│   └── AzureDevOps/          # Azure DevOps MCP server
 ├── .github/                  # Copilot instructions and VS custom agents
 ├── .cursor/                  # Cursor rules and skills
 └── .vscode/                  # VS Code settings and MCP config
@@ -87,9 +89,24 @@ STAF patterns are enforced via repo instructions so generated code uses `TestBas
 | **GitHub Copilot** | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
 | **Visual Studio agents** | [.github/agents/](.github/agents/) — **STAF UI Automation**, **STAF API Automation** |
 | **Cursor** | `.cursor/rules/`, `.cursor/skills/` |
-| **MCP (browser + codegen)** | [MCPAgent/README.md](MCPAgent/README.md) |
+| **MCP** | [MCPAgent/README.md](MCPAgent/README.md) — **selenium-staf** and **azure-devops** |
 
 Symbol index: `docs/ai/ai-index.json` — refresh with `pwsh tools/UpdateAiIndex.ps1` after adding types.
+
+---
+
+## NuGet packages
+
+`STAFTests/STAF.Selenium.Tests.csproj` targets **net10.0** and references these versions:
+
+| Package | Version |
+|---------|---------|
+| STAF.UI.API | 4.4.4 |
+| Microsoft.NET.Test.Sdk | 18.10.1 |
+| MSTest.TestAdapter | 4.4.1 |
+| MSTest.TestFramework | 4.4.1 |
+| RestSharp | 114.0.0 |
+| HtmlAgilityPack | 1.13.0 |
 
 ---
 

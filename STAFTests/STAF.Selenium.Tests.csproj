@@ -20,12 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.2.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.3" />
-    <PackageReference Include="RestSharp" Version="113.1.0" />
-    <PackageReference Include="STAF.UI.API" Version="4.4.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.4.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.4.1" />
+    <PackageReference Include="RestSharp" Version="114.0.0" />
+    <PackageReference Include="STAF.UI.API" Version="4.4.4" />
   </ItemGroup>
 
   <ItemGroup>

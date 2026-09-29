@@ -2,6 +2,8 @@
 
 Optional material for maintainers, architects, and advanced AI setup. **Most users only need** [../README.md](../README.md) and the [user guide](../STAF-Framework-User-Guide.html).
 
+Current package versions are in the [root README](../../README.md#nuget-packages). MCP servers (**selenium-staf** and **azure-devops**) are in [MCPAgent/README.md](../../MCPAgent/README.md).
+
 | Document | Purpose |
 |----------|---------|
 | [implementation-guide.md](implementation-guide.md) | Step-by-step GitHub Copilot / Cursor usage per IDE |
