@@ -1,5 +1,20 @@
 # Release Notes
 
+## Dependency refresh
+
+Direct package references in `STAFTests/STAF.Selenium.Tests.csproj` are on the latest versions. The project still targets **net10.0**.
+
+| Package | Previous | Updated |
+|---------|----------|---------|
+| STAF.UI.API | 4.4.2 | 4.4.4 |
+| Microsoft.NET.Test.Sdk | 18.3.0 | 18.10.1 |
+| MSTest.TestAdapter | 4.2.3 | 4.4.1 |
+| MSTest.TestFramework | 4.2.3 | 4.4.1 |
+| RestSharp | 113.1.0 | 114.0.0 |
+| HtmlAgilityPack | 1.12.4 | 1.13.0 |
+
+MCP configs (`.cursor/mcp.json`, `.vscode/mcp.json`, `.mcp.json`) now include **azure-devops** (`MCPAgent/AzureDevOps/AzureDevOps.Mcp.Server.exe`) next to **selenium-staf**. See [MCPAgent/README.md](MCPAgent/README.md).
+
 ## Project upgraded to .NET 10
 
 The project has been upgraded from **.NET 8** to **.NET 10**.

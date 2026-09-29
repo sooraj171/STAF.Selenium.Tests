@@ -1,6 +1,8 @@
 # Documentation
 
-Reference material for **STAF.Selenium.Tests** — the sample solution for [STAF.UI.API](https://www.nuget.org/packages/STAF.UI.API).
+Reference material for **STAF.Selenium.Tests** — the sample solution for [STAF.UI.API](https://www.nuget.org/packages/STAF.UI.API) **4.4.4** on **.NET 10**.
+
+Package versions are listed in the [root README](../README.md#nuget-packages). MCP servers (**selenium-staf** and **azure-devops**) are documented in [MCPAgent/README.md](../MCPAgent/README.md).
 
 ## User guide
 

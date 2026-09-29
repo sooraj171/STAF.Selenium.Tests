@@ -1,0 +1,26 @@
+{
+    "inputs":  [
+                   {
+                       "description":  "Azure DevOps organization name (e.g. \u0027contoso\u0027)",
+                       "id":  "ado_org",
+                       "type":  "promptString"
+                   }
+               ],
+    "servers":  {
+                    "azure-devops":  {
+                                         "args":  [
+                                                      "${input:ado_org}",
+                                                      "-a",
+                                                      "interactive",
+                                                      "-d",
+                                                      "all"
+                                                  ],
+                                         "env":  {
+                                                     "ado_mcp_team":  "",
+                                                     "ado_mcp_project":  ""
+                                                 },
+                                         "command":  "MCPAgent/AzureDevOps/AzureDevOps.Mcp.Server.exe",
+                                         "type":  "stdio"
+                                     }
+                }
+}
